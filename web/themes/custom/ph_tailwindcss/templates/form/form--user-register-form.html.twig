@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Theme override for a 'form' element.
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the wrapper element.
+ * - children: The child elements of the form.
+ *
+ * @see template_preprocess_form()
+ */
+#}
+
+{# <pre>{{ dump(element|keys) }}</pre> #}
+
+<form{{ attributes.addClass('ph-form', 'no-shadow', 'p-4', 'hidden').setAttribute('data-collapsible-target', 'user_register') }}>
+  <div class="flex items-center justify-between space-x-8"> 
+  
+    <div class="basis-[25%] mb-8">
+      {{ element.user_picture }}
+    </div>
+    
+    <div class="basis-full">
+      {{ element.account }}
+    </div>
+    
+    <div class="basis-full">
+      {{ element.field_name }}
+      {{ element.field_link }}
+    </div>
+  </div>
+  
+  
+  {{ element.footer }}
+  {{ element.field_about }}
+  
+  {{ element.actions }}
+    
+{#   {{ element|without('user_picture', 'account', 'children') }}   #}
+{#   {{ children }} #}
+</form>

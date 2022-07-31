@@ -1,0 +1,5 @@
+{% if icon %}
+  <i{{ icon_attributes.addClass('opacity-60', 'text-xl') }}>{{ icon }}</i>
+{% else %}
+  <span{{ attributes }}>{{ title }}</span>
+{% endif %}

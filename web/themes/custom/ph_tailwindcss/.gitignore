@@ -1,0 +1,13 @@
+/*.log
+/mix-manifest.json
+/node_modules/
+/assets
+/README.txt
+/__*
+
+# Ignore compiled assets.
+# /dist/
+
+# Ignore lock files.
+/package-lock.json
+/yarn.lock

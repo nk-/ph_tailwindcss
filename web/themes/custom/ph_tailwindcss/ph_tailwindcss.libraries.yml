@@ -1,0 +1,30 @@
+# global-styling:
+#   css:
+#     base:
+#       dist/tailwind.css: {}
+
+global-styling:
+  version: VERSION
+  css:
+    base:
+      # '//fonts.gstatic.com': { attributes: { rel: preconnect } }  
+      '//fonts.googleapis.com/icon?family=Material+Icons': { external: true, minified: false }
+      # '//fonts.googleapis.com/icon?family=Material+Icons+Outlined': { attributes: { rel: preload, as: style } } 
+      '//fonts.googleapis.com/icon?family=Material+Icons+Outlined': { external: true, minified: false }
+      # '//cdnjs.cloudflare.com': { attributes: { rel: preconnect } }
+      '//cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css': { type: external, minified: true }
+    component:
+      dist/tailwind.css: {}
+  js:
+    # '//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js': { type: external, minified: true }
+    src/js/default.js: {}
+#   dependencies:
+#     - core/jquery
+#     - core/jquery.once
+#     - core/drupal
+
+search:
+  version: VERSION
+  js:
+    src/js/search.js: {}
+    

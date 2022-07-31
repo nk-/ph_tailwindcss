@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/*
+@tailwind variants;
+@tailwind screens;
+@tailwind sizing;
+*/
+
+@layer base {
+
+  h1,
+  h2 {
+    @apply font-extralight text-4xl mb-2 opacity-60
+  }
+
+  p {
+    @apply pb-4
+  }
+
+  a:hover {
+    @apply motion-safe:animate-pulse 
+  }
+ 
+  section {
+    @apply mb-40
+  }
+
+  .form-input {
+    @apply max-w-max text-base text-green-pale border-b border-b-transparent border-solid bg-transparent outline-none appearance-none w-full py-2 focus:border-green-pale
+  }
+  
+  textarea.form-input {
+    @apply h-auto  
+  }
+}
+
+@layer components {
+
+  [id$="-local-tasks"] ul {
+    @apply list-none list-inside
+  }
+  
+  .flex-center {
+    @apply flex items-center justify-center
+  }
+   
+  .form-required::after {
+    display: inline-flex;
+    content: '*';
+    color: rgb(239, 68, 68);
+    margin-left: 2px;
+  }
+
+  .form-icon {
+    @apply max-w-max z-10 text-green-pale text-lg relative w-full basis-[10%] 
+  }
+    
+   
+  /**
+   * Custom animation, "grow" with usage of pre-existing twcss classes. 
+   *  @see templates/navigation/menu--secondary-menu.html.twig for usage example.
+   */
+  .animation-grow {
+    @apply transition-all duration-200 ease-linear w-56 scale-0 invisible -translate-y-2/4 translate-x-2/4
+  }
+  
+  .animation-grow.animation-active {
+    @apply scale-100 visible translate-y-0 translate-x-0
+  }
+  
+  .pane {
+    @apply bg-white w-max rounded-md shadow-lg z-20 p-4 mt-2 leading-8
+  }
+  .pane.no-shadow {
+    @apply shadow-none
+  }
+  
+  /**
+   * "Collapsible pane" custom component
+   *  @see templates/navigation/menu--acount.html.twig for usage example.
+   *  @see phFactory.collapsible in src/js/default.js
+   */
+  /*
+  .collapsible-pane {
+    @apply pane z-20 p-4 mt-2 leading-8
+  }
+  .collapsible-pane.absolute {
+    @apply left-auto right-0 text-base font-light
+  }
+  */
+  
+  .pane.absolute {
+    @apply max-w-screen-sm left-auto right-0 text-base font-light
+  }
+
+   
+  .item-link {
+    @apply text-sm text-green-pale hover:bg-red-pale hover:text-white hover:animate-none rounded p-2
+  }
+  
+  /**
+   * "Fab" custom component
+   *   @see templates/forms/input--search-input.html.twig for usage example
+   */
+  .fab-parent {
+    @apply flex items-center max-w-max justify-between space-x-2    
+  }
+  .fab-wrapper {
+    @apply w-9 cursor-pointer rounded-full border-solid border-white border-4 text-center transition-transform delay-150 hover:scale-110 duration-300 max-w-none min-w-[2.25rem] max-h-[2.25rem] shadow-md hover:shadow-lg
+  }
+  
+  .fab-wrapper.is-active {
+     @apply scale-[120%] shadow-lg
+  }
+  
+  .fab-icon {
+    @apply opacity-60 text-xl text-green-pale 
+  }
+  
+  .fab-wrapper.is-active > .fab-icon {
+    @apply text-red-pale
+  }
+  
+  /**
+   * Drupal's admin tabs
+   */
+  .tailwind-tab a {
+    @apply inline-block px-4 py-2 rounded-t-lg border-solid border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300
+  }
+  .tailwind-tab a.is-active {
+    @apply border-blue-600 dark:text-blue-500 dark:border-blue-500
+  }
+  
+  /**
+   * Highlight.js code highlighting
+   */
+  code.hljs {
+    @apply font-light font-mono
+  }
+  code.hljs.code-title {
+    @apply opacity-60
+  }
+  code.hljs.code-title > .hljs-comment {
+    @apply hover:animate-pulse duration-75 text-lime-400 font-mono
+  }
+  
+  /**
+   * Video play icon.
+   */
+  .play-arrow {
+    @apply bg-gray-500 opacity-80
+  }
+  i.play-arrow {
+    left: calc(50% - 1.5rem);  
+  }
+
+  /*
+  img.logo-wide {
+    @apply transform-gpu transition duration-500 rounded-md grayscale-[40%] hover:grayscale-0
+  }
+  */
+}
+
+/**
+ * "On the fly" classes, need to be defined outside of taliwindcss layers.
+*/
+.is-active {
+  @apply text-red-pale
+}
+
+.floating {
+  transform: translateY(-80%);
+  pointer-events: none;
+  transition: .1s;
+  position: absolute;
+}
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),
+.ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
+.ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+  @apply border-none bg-transparent
+}
+
+.ck.ck-editor__editable.ck-focused {
+  outline: none !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}

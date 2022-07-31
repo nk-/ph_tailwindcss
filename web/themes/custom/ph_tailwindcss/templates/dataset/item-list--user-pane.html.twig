@@ -1,0 +1,59 @@
+{#
+/**
+ * @file
+ * Theme override for an item list.
+ *
+ * Available variables:
+ * - items: A list of items. Each item contains:
+ *   - attributes: HTML attributes to be applied to each list item.
+ *   - value: The content of the list element.
+ * - title: The title of the list.
+ * - list_type: The tag for list element ("ul" or "ol").
+ * - wrapper_attributes: HTML attributes to be applied to the list wrapper.
+ * - attributes: HTML attributes to be applied to the list.
+ * - empty: A message to display when there are no items. Allowed value is a
+ *   string or render array.
+ * - context: A list of contextual data associated with the list. May contain:
+ *   - list_style: The custom list style.
+ *
+ * @see template_preprocess_item_list()
+ */
+#}
+
+{% if context.list_style %}
+  {%- set attributes = attributes.addClass('item-list__' ~ context.list_style) %}
+{% endif %}
+{% if items or empty %}
+  {%- if title is not empty -%}
+    <h3>{{ title }}</h3>
+  {%- endif -%}
+
+  {%- if items -%}
+    
+    {% 
+      set back_icon_classes = [
+        'px-4',
+        'text-green-pale',
+        'material-icons-outlined',
+        'hidden',
+        'animate__animated',
+        'animate__bounceIn',
+        'animate__delay-1s',
+      ]
+    %}
+
+    <i{{ create_attribute({'class': back_icon_classes}).setAttribute('role', 'button').setAttribute('data-back-icon-target', 'west') }}>west</i>
+    
+    <{{ list_type }}{{ attributes.setAttribute('data-collapsible-hide', 'user_pane') }}>
+      {%- for key, item in items -%}
+        {% set icon = key == 'user.page' ? 'login' : key|replace({'user.': ''}) %}
+        <li{{ item.attributes.addClass('item-link') }}>
+          {# <i class="material-icons-outlined text-base">{{ icon }}</i> #}
+          {{ item.value }}
+        </li>
+      {%- endfor -%}
+    </{{ list_type }}>
+  {%- else -%}
+    {{- empty -}}
+  {%- endif -%}
+{%- endif %}

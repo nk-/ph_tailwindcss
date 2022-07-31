@@ -1,0 +1,94 @@
+{#
+/**
+* @file
+* Theme override to display the file entity as a video tag.
+*
+* Available variables:
+* - attributes: An array of HTML attributes, intended to be added to the
+*   video tag.
+* - files: And array of files to be added as sources for the video tag. Each
+*   element is an array with the following elements:
+*   - file: The full file object.
+*   - source_attributes: An array of HTML attributes for to be added to the
+*     source tag.
+*/
+#}
+
+{% 
+  set wrapper_classes = [
+    'video-wrapper',
+    'relative',
+    'w-full',
+  ]
+%}
+
+{%
+  set video_classes = [
+   'w-full',
+  ]
+%}
+
+{%
+  set overlay_classes = [
+    'overlay-wrapper',
+    'w-full',
+    'bg-slate-100',
+    'absolute',
+    'z-10',
+    'inset-0',
+    'opacity-20',
+  ]
+
+%}
+{#
+  'animate-pulse',
+    'hover:animate-none',
+#}
+{%
+  set icon_classes = [
+       'play-arrow',
+    'material-icons',
+    'cursor-pointer',
+    'max-w-fit',
+    'max-h-fit',
+    'text-5xl',
+    'rounded-full',
+    'text-lime-200',
+    'absolute',
+    'z-20',
+    'top-1/2',
+  ]
+%}
+
+{%
+  set _icon_classes = [
+    'play-arrow',
+    'material-icons',
+    'cursor-pointer',
+    'max-w-fit',
+    'max-h-fit',
+    'text-5xl',
+    'rounded-full',
+    'text-lime-200',
+    'absolute',
+    'z-20',
+    'top-1/2',
+    'left-2/4',
+    'translate-x-[-50%]',
+    'translate-y-[-50%]',
+    'transform-gpu',
+   
+  ]
+%}
+
+<div{{ create_attribute({'class': wrapper_classes}) }}>
+  <div{{ create_attribute({'class': overlay_classes}) }}></div>
+  <i{{ create_attribute({'class': icon_classes}) }}>play_arrow</i>
+
+  <video {{ attributes.addClass(video_classes) }}> {# .setAttribute('preload', 'true') }}> #}
+  
+    {% for file in files %}
+      <source {{ file.source_attributes }} />
+    {% endfor %}
+  </video>
+</div>

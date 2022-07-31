@@ -1,0 +1,50 @@
+{#
+/**
+ * @file
+ * Theme override for an 'input' #type form element.
+ *
+ * Available variables:
+ * - attributes: A list of HTML attributes for the input element.
+ * - children: Optional additional rendered elements.
+ *
+ * @see template_preprocess_input()
+ */
+#}
+
+{% 
+  set input_classes = [
+    'form-input',
+  ]
+%}
+
+{% 
+  set icon_classes = [
+    'material-icons-outlined',
+    'toggle-default',
+    'form-icon',
+  ]
+%}
+
+{% 
+  set close_icon_classes = [
+    'material-icons-outlined',
+    'toggle-close',
+    'form-icon',
+    'hidden',
+    'animate__animated',
+    'animate__fadeIn',
+  ]
+%}
+
+{% apply spaceless %}
+{% if icon %}
+  <div class="flex items-center">
+    <input{{ attributes.addClass(input_classes) }} />
+    <i{{ create_attribute({'class': icon_classes }) }}>{{ icon }}</i>
+    <i{{ create_attribute({'class': close_icon_classes }).setAttribute('role', 'button') }}>{{ close_icon }}</i>
+  </div>
+{% else %}
+  <input{{ attributes.addClass(input_classes) }} />
+{% endif %}
+{{ children }}
+{% endapply %}

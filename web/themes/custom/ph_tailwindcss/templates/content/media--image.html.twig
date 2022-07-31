@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Theme override to display a media item.
+ *
+ * Available variables:
+ * - name: Name of the media.
+ * - content: Media content.
+ *
+ * @see template_preprocess_media()
+ */
+#}
+
+{% if attributes is not empty %}
+  <div{{ attributes }}>
+{% endif %}
+  {{ title_suffix.contextual_links }}
+  {% if content %}
+    {{ content }}
+  {% endif %}
+{% if attributes is not empty %}
+  </div>
+{% endif %}

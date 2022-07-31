@@ -1,0 +1,16 @@
+name: PH* Tailwind CSS
+description: Based on Tailwind CSS starter kit theme.
+core_version_requirement: ^8 || ^9 | ^10
+type: theme
+base theme: stable
+libraries:
+  - ph_tailwindcss/global-styling
+regions:
+  header: 'Header'
+  header_right: 'Header right'
+  help: 'Help'
+  highlighted: 'Highlighted'
+  content: 'Content'
+  sidebar_first: 'Left sidebar'
+  sidebar_second: 'Right sidebar'
+  footer: 'Footer'
