@@ -1,0 +1,16 @@
+# Ignore everything first
+/*
+
+# Loop through Include these and enable just some
+!/.gitignore
+!/composer.json
+!/README.md
+
+# Add our theme
+!/web/
+/web/*
+!/web/themes/
+/web/themes/*
+!/web/themes/custom/
+/web/themes/custom/*
+!/web/themes/custom/ph_tailwindcss/
