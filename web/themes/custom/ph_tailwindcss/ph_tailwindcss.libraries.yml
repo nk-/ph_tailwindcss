@@ -14,7 +14,7 @@ global-styling:
       # '//cdnjs.cloudflare.com': { attributes: { rel: preconnect } }
       '//cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css': { type: external, minified: true }
     component:
-      dist/tailwind.css: {}
+      dist/tailwind.css: { preprocess: false, minified: true } 
   js:
     # '//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js': { type: external, minified: true }
     src/js/default.js: {}
@@ -23,8 +23,8 @@ global-styling:
 #     - core/jquery.once
 #     - core/drupal
 
-search:
-  version: VERSION
-  js:
-    src/js/search.js: {}
-    
+# search:
+#   version: VERSION
+#   js:
+#     src/js/search.js: {}
+#     

@@ -1,16 +1,27 @@
-# Ignore everything first
+# Ignore everything first.
 /*
 
-# Loop through Include these and enable just some
+# Loop through these and enable just some.
 !/.gitignore
 !/composer.json
 !/README.md
 
-# Add our theme
+# Prepare for theme and module.
 !/web/
 /web/*
+
+# Add our module.
+!/web/modules/
+/web/modules/*
+!/web/modules/custom/
+/web/modules/custom/*
+!/web/modules/custom/ph_core/
+
+# Add our theme.
 !/web/themes/
 /web/themes/*
 !/web/themes/custom/
 /web/themes/custom/*
 !/web/themes/custom/ph_tailwindcss/
+/web/themes/custom/ph_tailwindcss/__*
+/web/themes/custom/ph_tailwindcss/**/__*

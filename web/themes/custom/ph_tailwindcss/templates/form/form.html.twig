@@ -10,6 +10,9 @@
  * @see template_preprocess_form()
  */
 #}
+
+{{ attach_library('ph_core/forms') }}
+
 <form{{ attributes.addClass('ph-form') }}>
   {{ children }}
 </form>

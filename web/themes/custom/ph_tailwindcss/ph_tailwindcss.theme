@@ -5,27 +5,14 @@
  * Functions to support theming in the PH* Tailwind CSS theme.
  */
 
-use Drupal\Core\Url;
-use Drupal\Core\Link;
-use Drupal\Core\Render\Markup;
-use Drupal\Core\Render\Element;
-
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Session\AccountInterface;
-
-
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Crypt;
-
-use Drupal\ph_tailwindcss\PhFactory;
-
 
 /**
  * Implements hook_theme_suggestions_hook_alter().
  */
 function ph_tailwindcss_theme_suggestions_item_list_alter(array &$suggestions, array $variables) {
   if (isset($variables['items']) && isset($variables['items']['user.logout'])) {
-    $suggestions[] = 'item_list__user_pane'; 
+    $suggestions[] = 'item_list__user_pane';
   }
 }
 
@@ -33,12 +20,8 @@ function ph_tailwindcss_theme_suggestions_item_list_alter(array &$suggestions, a
  * Implements hook_theme_suggestions_hook_alter().
  */
 function ph_tailwindcss_theme_suggestions_form_alter(array &$suggestions, array $variables) {
-  $suggestions[] = 'form__ph_form';  
+  $suggestions[] = 'form__ph_form';
   $suggestions[] = 'form__' . $variables['element']['#form_id'];
-  if (isset($variables['element']['#attributes']['data-hide-submit'])) {
-     //$suggestions[] = 'form__ph_form_hide_submit';
-     //$suggestions[] = 'form__ph_form_hide_submit';  
-  }
 }
 
 /**
@@ -59,7 +42,7 @@ function ph_tailwindcss_theme_suggestions_input_alter(array &$suggestions, array
   if (!in_array($variables['element']['#type'], $suggestions)) {
     $suggestions[] = 'input__' . $variables['element']['#type'];
   }
-  $name = strpos($variables['element']['#name'], '[') !== FALSE ? str_replace(['[', ']'], ['_', ''], $variables['element']['#name']) : $variables['element']['#name']; 
+  $name = strpos($variables['element']['#name'], '[') !== FALSE ? str_replace(['[', ']'], ['_', ''], $variables['element']['#name']) : $variables['element']['#name'];
   $suggestions[] = 'input__' . $variables['element']['#type'] . '__' . $name;
 }
 
@@ -75,48 +58,11 @@ function ph_tailwindcss_theme_suggestions_image_alter(array &$suggestions, array
 /**
  * Implements hook_preprocess_HOOK().
  */
-/*
-function ph_tailwindcss_preprocess_image_widget(&$variables) {
-  $variables['element']['preview']['#attributes']['class'][] = 'opacity-70';
-  $variables['element']['preview']['#attributes']['class'][] = 'grayscale-80';
-  $variables['element']['preview']['#attributes']['class'][] = 'w-16';
-  $variables['element']['preview']['#attributes']['class'][] = 'rounded-full';
-  dpm($variables['element']['preview']);
-}
-*/
-
 function ph_tailwindcss_preprocess_container__text_format_filter_help(&$variables) {
   unset($variables['children']);
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-/*
-function ph_tailwindcss_preprocess_container(&$variables) {
-  //dpm($variables['element']);
-  if (in_array('widget', Element::children($variables['element'])) && !empty($variables['element']['widget']) && isset($variables['element']['widget'][0]['#type'])) {
-    //dpm($variables['element']['widget'][0]['#type']);
-    if ($variables['element']['widget'][0]['#type'] == 'text_format') {
-      $variables['element']['widget'][0]['#title_display'] = 'invisible';
-      $variables['element']['widget'][0]['#description_display'] = 'invisible';
-      //unset($variables['element']['widget'][0]['help']);
-      //unset($variables['element']['widget'][0]['guidelines']);
-      //unset($variables['element']['widget'][0]['format']['help']);
-      //unset($variables['element']['widget'][0]['format']['guidelines']);
-      //dpm($variables['element']['widget'][0]['format']); 
-    }
-  }
-}
-*/
-
-/*
-function ph_tailwindcss_preprocess_input__url(&$variables) {
-  dpm($variables);
-}
-*/
-  
-  /**
  * Implements hook_preprocess_HOOK().
  */
 function ph_tailwindcss_preprocess_input(&$variables) {
@@ -126,25 +72,29 @@ function ph_tailwindcss_preprocess_input(&$variables) {
       $variables['title_attributes']['class'][] = 'testover';
     }
     if (isset($variables['element']['#type'])) {
-      
+
       $variables['close_icon'] = 'close';
-      
+
       switch ($variables['element']['#type']) {
         case 'textfield':
           $variables['icon'] = 'text_fields';
           break;
+
         case 'email':
         case 'password':
           $variables['icon'] = $variables['element']['#type'];
           break;
+
         case 'search':
           $variables['icon'] = $variables['element']['#type'];
-          $variables['#attached']['library'][] = 'ph_tailwindcss/search';
+          $variables['#attached']['library'][] = 'ph_core/search';
           break;
+
         case 'url':
           $variables['icon'] = 'add_link';
           break;
-        default: 
+
+        default:
           $variables['icon'] = NULL;
           break;
       }
@@ -157,7 +107,7 @@ function ph_tailwindcss_preprocess_input(&$variables) {
  */
 function ph_tailwindcss_preprocess_field(&$variables) {
   $code_fields = [
-    'field_code_title' =>  'data-collapsible', 
+    'field_code_title' => 'data-collapsible',
     'field_code' => 'data-collapsible-target',
   ];
   if (in_array($variables['field_name'], array_keys($code_fields))) {
@@ -171,255 +121,89 @@ function ph_tailwindcss_preprocess_field(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function ph_tailwindcss_preprocess_menu__secondary_menu(&$variables) {
-  
-  $entity_type_namager = \Drupal::service('entity_type.manager');
-  
-  $items = [];
-    $item_options = [
-      'attributes' => [
-        'class' => [],
-      ],
-    ];
-    $icon_attributes = [
-      'class' => [],  
-    ];
-      
-/*
-    foreach($variables['items'] as $menu_link_id => $menu_link) {
-      if (isset($menu_link['url']) && $menu_link['url'] instanceof Url) {
-        $route_name = $menu_link['url']->getRouteName();
-        switch ($route_name) {
-          case 'search.view':
-            $menu_link['attributes']['data-ph-search-widget'] = '';
-            $variables['#attached']['library'][] = 'ph_tailwindcss/search';
-            //dpm($variables);
-            //$search_widget_data = [];
-            //$search_widget = PhFactory::class::renderViewFilter('search_content', 'page', FALSE, $search_widget_data); //(AccountInterface, EntityTypeManagerInterface); //::class();
-            //dpm($ph_factory);
-            
-             
-            break;  
-        }
-      }
-    }
-*/
-    
-    $search_widget_data = [];
-    
-/*
-    $variables['search_widget'] = [
-      '#lazy_builder' => [
-        PhFactory::class . '::renderViewFilter',
-        ['search_content', 'page', TRUE, $search_widget_data],
-      ],
-      '#create_placeholder' => TRUE,
-    ];
-*/
-    
-    
-    $ph_factory = \Drupal::classResolver(PhFactory::class);
-    $search_widget = $ph_factory->renderViewFilter('search_content', 'page');
-    if (isset($search_widget['form'])) {
-      $search_widget['form']['actions']['#attributes']['class'][] = 'visually-hidden';  
-      $search_widget['form']['keys']['#type'] = 'search';
-      //$search_widget['form']['keys']['#attributes']['class'][] = 'hidden';
-      $variables['search_widget'] = $search_widget['form'];
-    }
-    
-    $contact_form_entity = $entity_type_namager->getStorage('contact_message')->create(['contact_form' => 'feedback']);
- //     'contact_form' => 'feedback',
-   // ]);
-    $variables['contact_form'] = Drupal::service('entity.form_builder')->getForm($contact_form_entity);
-/*
-    $variables['contact_form']['#attributes']['data-collapsible-target'] = 'entity_contact_form_canonical';
-    $variables['contact_form']['#attributes']['class'][] = 'hidden';
-    $variables['contact_form']['#attributes']['class'][] = 'pane';
-    $variables['contact_form']['#attributes']['class'][] = 'collapsible-pane';
-    $variables['contact_form']['#attributes']['class'][] = 'absolute';
-*/
-    //$formObject = $entity_type_namager->getFormObject('contact_form', 'feedback')->setEntity($contact_form_entity);
-    //$variables['contact_form'] = \Drupal::formBuilder()->getForm($contact_form_entity);
-    //dpm($variables['contact_form']);
- 
-/*
-    $variables['constact_form']= \Drupal::formBuilder()->getForm(Drupal\user\Form\UserLoginForm::class);
-    $variables['constact_form'] ['#attributes']['data-collapsible-target'] = 'contact-form';
-    $variables['constact_form'] ['#attributes']['class'][] = 'hidden';
-    $variables['constact_form']['#attributes']['class'][] = 'collapsible-pane';
-*/
+  if ($search_widget = \Drupal::service('ph_core')->renderSearch('search_content', 'page')) {
+    $variables['search_widget'] = $search_widget;
+  }
+  if ($contact_form = \Drupal::service('ph_core')->renderContactForm('feedback')) {
+    $variables['contact_form'] = $contact_form;
+  }
+  $variables['#attached']['library'][] = 'ph_core/collapsible';
+
+  $cid = 'ph_tailwindcss:stagerred';
+  $cache = &drupal_static(__FUNCTION__);
+  $variables['ph_init'] = TRUE;
+  if (!isset($cache)) {
+    $variables['ph_init'] = TRUE;
+  }
+  else {
+    $variables['ph_init'] = FALSE;
+  }
+  /*
+  else {
+  $variables['ph_cached'] = TRUE;
+  }
+   */
+
+  /*
+  //static &$cache = \Drupal::service('cache.static')->get($cid);
+  if ($cached) {
+  //$variables['ph_cached'] = $cache->data;
+  }
+  else {
+  $data = TRUE;
+  $cache_tags = [
+  'session',
+  'ph_staggered'
+  ];
+  \Drupal::service('cache.static')
+  ->set($cid, $data, CacheBackendInterface::CACHE_PERMANENT, $cache_tags);
+  }
+   */
+  // dpm(Cache::getBins());
 }
 
 /**
  * Implements hook_preprocess_HOOK().
  */
 function ph_tailwindcss_preprocess_menu__account(&$variables) {
-  //$build = PhUserPicture::build();
-/*
-  
-  $user_picture = [
-    '#lazy_builder' => [
-      //'PhUserPicture::build',
-      PhUserPicture::class . ':build',
-      [],
-    ],
-    '#create_placeholder' => TRUE,
-  ];
-*/
 
-  //$variables['user_picture'] = \Drupal::service('renderer')->render($user_picture);
-  //dpm($variables['user']->id);
-  $entity_type_namager = \Drupal::service('entity_type.manager');
-  
-  $uid = $variables['user']->id();
-  
-  if ($account = $entity_type_namager->getStorage('user')->load($uid)) {
-    $image = $account->hasField('user_picture') && $account->get('user_picture')->target_id ? $entity_type_namager->getStorage('file')->load($account->get('user_picture')->target_id) : NULL;
-    
-/*
-    if ($account->hasField('user_picture') && !$image) {
-      $default_image = $account->get('user_picture')->getFieldDefinition()->getFieldStorageDefinition()->getSettings()['default_image'];
-      if (isset($default_image['uuid']) && !empty($default_image['uuid'])) {
-        $image_array = $entity_type_namager->getStorage('file')->loadByProperties(['uuid' => $default_image['uuid']]);
-        $image = !empty($image_array) ? reset($image_array) : NULL;
-      }
+  $pane_variables = \Drupal::service('ph_core')->renderUserPane($variables['items']);
+
+  if (isset($pane_variables['account']) && isset($pane_variables['image']) && is_object($pane_variables['image']['file'])) {
+
+    $variables['user_link'] = [
+      '#theme' => 'image',
+      '#style_name' => 'avatar',
+      '#uri' => is_object($pane_variables['image']['style']) ? $pane_variables['image']['style']->buildUri($pane_variables['image']['file']->getFileUri()) : $pane_variables['image']['file']->getFileUri(),
+      '#attributes' => [
+        'data-avatar-color' => '',
+      ],
+    ] + $pane_variables['image']['attributes'];
+  }
+  else {
+    $variables['user_link'] = 'icon';
+  }
+
+  if (isset($pane_variables['items']) && !empty($pane_variables['items'])) {
+    $variables['user_pane'] = [
+      '#theme' => 'item_list',
+      '#items' => $pane_variables['items'],
+      '#attributes' => [
+        'data-collapsible-hide' => 'user_pane',
+      ],
+    ];
+  }
+
+  if (!empty($pane_variables['forms'])) {
+    if (isset($pane_variables['forms']['login_form'])) {
+      $variables['login_form'] = $pane_variables['forms']['login_form'];
     }
-*/
-   
-    //if ($image) {
-          
-      
-//      $links = [];
-      $items = [];
-      $item_attributes = [
-        'data-hide' => 'user_pane',
-        'data-back-icon' => 'west',
-        'class' => [
-          'collapsible-toggle',
-          'block',
-          'hover:animate-none',
-        ],
-      ];
-      
-      $icon_attributes = [
-        'class' => [],  
-      ];
-      
-        
-      foreach($variables['items'] as $route_name => $route) { 
-       
-        switch($route_name) {
-          case 'user.page':
-            $route_link = $route_name;
-            $title = t('My page');
-            $icon = 'read_more';
-            $icon_attributes['class'][] = 'text-xl';
-            break;
-          case 'user.logout':
-             $route_link = $uid == 0 ? 'user.login' : $route_name;
-             $title = $uid == 0 ? t('Sign in') : $route['title'];
-             $icon = str_replace('user.', '', $route_name);
-             $icon_attributes['class'][] = 'text-base';
-             $item_attributes['data-collapsible'] = $uid == 0 ? 'user_login' : str_replace('-', '_', Html::getClass($route_name));
-           break;
-          default:
-            $route_link = $route_name;
-            $title = $route['title'];
-            $icon = str_replace('user.', '', $route_name);
-            $icon_attributes['class'][] = 'text-base';
-            $item_attributes['data-collapsible'] = str_replace('-', '_', Html::getClass($route_name));
-            break;
-        }
-
-        
-        $items[$route_name] = [
-          '#type' => 'link',
-          '#url' => $route['url'], 
-          '#title' => $title,
-          '#attributes' => $item_attributes,
-        ];
-      }
-      
-      if ($uid == 0) {
-        $register_url = Url::fromRoute('user.register');
-         $item_attributes['data-collapsible'] = 'user_register';
-         $items['user.register'] = [
-          '#type' => 'link',
-          '#url' => $register_url, 
-          '#title' => t('Sign up'),
-          '#attributes' => $item_attributes,
-        ];
-        
-        //\Drupal::currentUser()->isAnonymous()) {
-        $variables['login_form'] = \Drupal::formBuilder()->getForm(Drupal\user\Form\UserLoginForm::class);
-        //$variables['login_form']['#attributes']['data-collapsible-target'] = 'user_login';
-        //$variables['login_form']['#attributes']['data-collapsible-animate'] = 'animation-active';
-        //$variables['login_form']['#attributes']['class'][] = 'animation-grow';
-        //$variables['login_form']['#attributes']['class'][] = 'collapsible-pane';
-        //$variables['login_form']['#attributes']['class'][] = 'hidden';
-        
-        $user_entity =  $entity_type_namager->getStorage('user')->create([]);
-        $formObject = $entity_type_namager->getFormObject('user', 'register')->setEntity($user_entity);
-        $variables['register_form'] = \Drupal::formBuilder()->getForm($formObject);
-        //$variables['register_form']['#attributes']['class'][] = 'collapsible-pane';
-        //$variables['register_form']['#attributes']['class'][] = 'hidden';
-        //$variables['register_form']['#attributes']['class'][] = 'w-min';
-        //$variables['register_form']['#attributes']['data-collapsible-target'] = 'user_register';
-        $variables['register_form']['user_picture']['#title_display'] = 'invisible';
-        $variables['register_form']['field_about']['widget'][0]['#description_display'] = 'invisible';
-        $variables['register_form']['field_about']['widget'][0]['#attributes']['placeholder'] = $variables['register_form']['field_about']['widget'][0]['#title'];
-        //dpm($variables['register_form']['field_about']); //['widget'][0]['#attributes']['placeholder']);
-        //dpm(Element::children($variables['register_form']['field_about']));
-        
-        //print  \Drupal::service('renderer')->render($form);
-
-      }
-     
-      $variables['user_pane'] = [
-        '#theme' => 'item_list',
-        '#items' =>  $items,
-        '#attributes' => [
-          'data-collapsible-hide' => 'user_pane',
-        ],  
-      ];
-    
-    
-    
-     
-    if ($image) {
-      $style_id = NULL;
-      if ($settings = $entity_type_namager->getStorage('entity_view_display')->load('user.user.default')) {
-        if ($settings->getRenderer('user_picture')) {
-          $image_settings = $settings->getRenderer('user_picture')->getSettings();
-          $style_id = $image_settings['image_style'];
-          //'image_link',
-          //'image_loading',
-        }
-      }
-      
-      $style = $style_id ? $entity_type_namager->getStorage('image_style')->load($style_id) : NULL;
-      //$uri = 
-      
-            
-      //$variables['items']['user.page']['title'] = [
-      $variables['user_link'] = [
-        '#theme' => 'image',
-        '#style_name' => 'thumbnail',
-        '#uri' => $style ? $style->buildUri($image->getFileUri()) : $image->getFileUri(),
-        '#attributes' => [
-          'class' => [
-            'rounded-full',
-          ], 
-        ],
-        '#width' => $account->get('user_picture')->width,
-        '#height' => $account->get('user_picture')->height,
-        '#alt' => $account->get('user_picture')->alt,
-        '#title' => $account->get('user_picture')->title,
-      ];
-    }
-    else {
-      $variables['user_link'] = 'icon';
+    if (isset($pane_variables['forms']['register_form'])) {
+      $variables['register_form'] = $pane_variables['forms']['register_form'];
     }
   }
+
+  $variables['#attached']['library'][] = 'ph_core/collapsible';
 }
 
 /**
@@ -427,7 +211,7 @@ function ph_tailwindcss_preprocess_menu__account(&$variables) {
  */
 function ph_tailwindcss_preprocess_image(&$variables) {
   if (isset($variables['style_name']) && !empty($variables['style_name'])) {
-    $variables['attributes']['class'][] =  Html::getClass($variables['style_name']);
+    $variables['attributes']['class'][] = Html::getClass($variables['style_name']);
   }
 }
 
@@ -439,7 +223,7 @@ function ph_tailwindcss_preprocess_file_video(&$variables) {
     foreach ($variables['files'] as &$file) {
       $file['source_attributes']['data-src'] = $file['source_attributes']['src'];
       unset($file['source_attributes']['src']);
-    } 
+    }
   }
 }
 
@@ -448,56 +232,21 @@ function ph_tailwindcss_preprocess_file_video(&$variables) {
  */
 function ph_tailwindcss_preprocess_media__video(&$variables) {
   if (isset($variables['elements']['field_media_image'])) {
-    
+
     $settings = \Drupal::service('entity_type.manager')->getStorage('entity_view_display')
-    ->load('media.image.' . $variables['view_mode'])
-    ->getRenderer('field_media_image')
-    ->getSettings();
-    
-    
+      ->load('media.image.' . $variables['view_mode'])
+      ->getRenderer('field_media_image')
+      ->getSettings();
+
     foreach ($variables['elements']['field_media_image'] as $key => $field_media_image) {
       if (is_numeric($key) && isset($field_media_image['#item']) && isset($field_media_image['#item']->entity) && isset($variables['elements']['field_media_video_file']) && isset($variables['elements']['field_media_video_file'][$key])) {
         $image_style = $key == 0 && !isset($variables['elements']['field_media_image'][1]) ? 'poster_large' : $settings['image_style'];
         $style = \Drupal::service('entity_type.manager')->getStorage('image_style')->load($image_style);
 
-
         if ($original_image = $field_media_image['#item']->entity->getFileUri()) {
           $variables['elements']['field_media_video_file'][$key]['#attributes']['poster'] = $style->buildUrl($original_image);
         }
-        
-/*
-        if ($poster = $field_media_image['#item']->entity->createFileUrl()) {
-          $variables['elements']['field_media_video_file'][$key]['#attributes']['poster'] = $poster;
-        }
-*/
       }
-    } 
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-/*
-function ph_tailwindcss_preprocess_block(&$variables) {
-  if (ph_tailwindcss_get_active_theme() == 'ph_tailwindcss' && $variables['base_plugin_id'] == 'system_branding_block') {
-    $variables['site_logo'] = '';
-    if ($variables['content']['site_logo']['#access'] && $variables['content']['site_logo']['#uri']) {
-      $variables['site_logo'] = str_replace('.svg', '.png', $variables['content']['site_logo']['#uri']);
     }
   }
 }
-*/
-
-
-/**
- * Get the active theme.
- *
- * @return string
- *   The name of the active theme.
- */
-/*
-function ph_tailwindcss_get_active_theme() {
-  return \Drupal::service('theme.manager')->getActiveTheme()->getName();
-}
-*/

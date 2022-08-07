@@ -1,5 +1,5 @@
 name: PH* Tailwind CSS
-description: Based on Tailwind CSS starter kit theme.
+description: Based on Tailwind CSS starter kit theme. 
 core_version_requirement: ^8 || ^9 | ^10
 type: theme
 base theme: stable
@@ -14,3 +14,4 @@ regions:
   sidebar_first: 'Left sidebar'
   sidebar_second: 'Right sidebar'
   footer: 'Footer'
+logo: 'themes/custom/ph_tailwindcss/logo.svg'

@@ -1,0 +1,8 @@
+services:
+  ph_core:
+    class: Drupal\ph_core\PhFactory
+    arguments: ['@current_user', '@entity_type.manager', '@form_builder', '@entity.form_builder', '@renderer']
+  ph_ajax_subscriber:
+    class: Drupal\ph_core\EventSubscriber\AjaxResponseSubscriber
+    tags:
+      - { name: event_subscriber }

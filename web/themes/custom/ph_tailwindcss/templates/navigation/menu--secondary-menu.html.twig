@@ -35,10 +35,10 @@
 
 {{ menus.menu_links(items, attributes, 0) }}
 
-{% macro menu_links(items, attributes, menu_level) %}
+{% macro menu_links(items, attributes, menu_level) %} 
   {% import _self as menus %}
   {% if items %}
-
+    
     {% if menu_level == 0 %}
       <ul{{ attributes.addClass('fab-parent') }}>
     {% else %}
@@ -54,7 +54,7 @@
     %}
     
     {% for item in items %}
-      {% set start = loop.index + 1 %}
+      {% set start = loop.index + 1 %} 
       {%
         set item_classes = [
           'animate__animated',
@@ -62,8 +62,8 @@
           'animate__delay-' ~ start ~ 's',
         ]
       %}
-      <li{{ item.attributes.addClass(item_classes) }}>
-        {{ link(item.title, item.url, {'class': link_classes, 'role': 'button', 'data-collapsible': item.url.getRouteName()|replace({'.': '_'}) }) }}
+    <li{{ item.attributes.addClass(item_classes).setAttribute('data-staggered', 'nav_right') }}>
+        {{ link(item.title, item.url, {'class': link_classes, 'role': 'button', 'data-collapsible': item.url.getRouteName()|replace({'.': '_'}), 'data-collapsible-parent': 'nav_right' }) }}
         {% if item.below %}
           {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
         {% endif %}

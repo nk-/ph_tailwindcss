@@ -1,27 +1,2 @@
-{%
-  set default_button_classes = [
-    'text-sm',
-    'text-green-pale',
-    'font-medium',
-    'uppercase',
-    'hover:text-white',
-    'disabled:hover:text-green-pale',
-    'hover:bg-green-pale',
-    'hover:opacity-70',
-    'disabled:hover:bg-transparent',
-    'cursor-pointer',
-    'disabled:cursor-not-allowed',
-    'opacity-100',
-    'disabled:opacity-40',
-    'transition-opacity',
-    'duration-500',
-    'max-w-max',
-    'px-4',
-    'py-2',
-    'border',
-    'border-solid',
-    'border-green-pale',
-    'border-1',
-  ]
-%}
-<input{{ attributes.addClass(default_button_classes).setAttribute('disabled', '') }} />{{ children }}
+<input{{ attributes }} />{{ children }}
+{# .setAttribute('disabled', '') #}

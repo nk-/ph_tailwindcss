@@ -10,7 +10,7 @@
  * @see template_preprocess_input()
  */
 #}
-
+ 
 {%
   set animation_classes = [
     'animate__animated',
@@ -37,15 +37,16 @@
 
 {% 
   set icon_classes = [
+    'toggle-default',
     'material-icons-outlined',
     'fab-icon',
+    'block',
   ]
 %}
 
 {% 
   set close_icon_classes = [
     'toggle-close',
-    'collapsible-search-close',
     'hidden',
     'animate__animated',
     'animate__fadeIn',
@@ -57,7 +58,7 @@
   <input{{ attributes.addClass(input_classes).setAttribute('data-collapsible-search-target', 'ph_search_input') }} />
   <div{{ create_attribute({'class': animation_classes}) }}>
     <div{{ create_attribute({'class': 'fab-wrapper' }) }}>
-      <i{{ create_attribute({'class': icon_classes }).addClass('toggle-default', 'collapsible-search-toggle').setAttribute('data-collapsible-search', 'ph_search_input').setAttribute('role', 'button') }}>search</i>
+      <i{{ create_attribute({'class': icon_classes }).setAttribute('data-collapsible-search', 'ph_search_input').setAttribute('role', 'button') }}>search</i>
       <i{{ create_attribute({'class': icon_classes }).addClass(close_icon_classes).setAttribute('role', 'button') }}>close</i>
     </div>
   </div>

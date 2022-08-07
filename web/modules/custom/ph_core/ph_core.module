@@ -1,0 +1,135 @@
+<?php
+
+/**
+ * @file
+ * ph_core.module
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Url;
+use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_theme().
+ */
+function ph_core_theme() {
+  return [
+
+    'ph_core__form' => [
+      'render element' => 'form',
+      'attributes' => [],
+    ],
+
+    'ph_core__icon_link' => [
+      'variables' => [
+        'uri' => NULL,
+        'title' => NULL,
+        'icon' => NULL,
+        'active_icon' => NULL,
+        'icon_attributes' => [],
+        'attributes' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ *
+ * Extra base fields on menu_link_content entity.
+ */
+function ph_core_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'menu_link_content') {
+    $fields['highlighted'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Highlighted'))
+      ->setDescription(t('If you want this item to be highlighted set a CSS class for it here, without dot'))
+      // ->setSetting('allowed_values_function', 'function_to_control_options')
+      ->setDisplayOptions('form', [
+        'type' => 'textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['icon'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Icon'))
+      ->setDescription(t('Icon attached to this menu item'))
+      ->setDisplayOptions('form', [
+        'type' => 'textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    return $fields;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function ph_core_theme_suggestions_menu_alter(array &$suggestions, array $variables) {
+  $current_path = explode('/', Url::fromRoute('<current>')->toString());
+  array_shift($current_path);
+  if (isset($variables['menu_name']) && $variables['menu_name'] == 'main') {
+    $suggestions[] = 'menu__' . $variables['menu_name'] . '__' . $current_path[0];
+    $suggestions[] = 'menu__' . $variables['menu_name'] . '__' . implode('_', $current_path);
+  }
+}
+
+/**
+ * Implements hook_preprocess_menu().
+ */
+function ph_core_preprocess_menu(&$variables, $hook) {
+
+  $icon = NULL;
+
+  // These are the extra base fields on menu_link_content.
+  foreach ($variables['items'] as &$item) {
+    $metadata = $item['original_link']->getMetaData();
+    if (isset($metadata['entity_id']) && !empty($metadata['entity_id'])) {
+      $menu_link_storage = \Drupal::service('entity_type.manager')->getStorage('menu_link_content');
+      $entity = $menu_link_storage->load($metadata['entity_id']);
+      $icon = $entity->hasField('icon') && !empty($entity->get('icon')->getValue()) && isset($entity->get('icon')->getValue()[0]['value']) ? $entity->get('icon')->getValue()[0]['value'] : NULL;
+      $highlighted = $entity->hasField('highlighted') && !empty($entity->get('highlighted')->getValue()) && isset($entity->get('highlighted')->getValue()[0]['value']) ? $entity->get('highlighted')->getValue()[0]['value'] : NULL;
+
+      if ($icon || $highlighted) {
+        $title = $item['title'];
+        $icon_attributes = [
+          'class' => [
+            'material-icons-outlined',
+          ],
+        ];
+
+        $item['title'] = [
+          '#theme' => 'ph_core__icon_link',
+          '#title' => $title,
+          '#icon' => $icon,
+          '#highlighted' => $highlighted,
+          '#attributes' => [
+            'class' => [
+              'menu-item-with-icon',
+            ],
+          ],
+          '#icon_attributes' => new Attribute($icon_attributes),
+        ];
+
+        if ($icon) {
+          $item['url']->setOption('attributes', [
+            'class' => ['link-flex'],
+          ]);
+
+        }
+        if ($highlighted) {
+          $item['attributes']->addClass($highlighted);
+        }
+      }
+    }
+  }
+
+  if ($icon) {
+    $variables['#attached']['library'][] = 'ph_core/icon_link';
+  }
+
+}

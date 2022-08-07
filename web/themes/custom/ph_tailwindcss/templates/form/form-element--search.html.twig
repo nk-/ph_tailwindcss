@@ -55,13 +55,14 @@
     disabled == 'disabled' ? 'form-disabled',
     errors ? 'form-item--error',
     'max-w-max',
-    'my-4',
+    'mb-4',
     'absolute',
-    'right-[2.75rem]',
-    '-top-[19px]',
+    '-top-0.5',
+    'right-11',
     'z-30',
    ]
 %}
+
 {%
   set description_classes = [
     'description',
@@ -69,7 +70,7 @@
   ]
 %}
 
-<div{{ attributes.addClass(classes) }}>
+<div{{ attributes.addClass(classes).setAttribute('data-staggered', 'nav_right') }}>
   {% if label_display in ['before', 'invisible'] %}
     {{ label }}
   {% endif %}
@@ -81,7 +82,9 @@
       {{ description.content }}
     </div>
   {% endif %}
+  
   {{ children }}
+  
   {% if suffix is not empty %}
     <span class="field-suffix">{{ suffix }}</span>
   {% endif %}

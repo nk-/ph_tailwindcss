@@ -27,7 +27,7 @@
     <div class="{{ wrapper_class }}">
     
       {% if site_logo %}
-        <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home" class="site-logo">
+        <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home" class="max-h-12">
           <img class="max-h-12" src="{{ site_logo }}" alt="{{ 'Home'|t }}" />
         </a>
       {% endif %}
@@ -40,7 +40,7 @@
         {% endif %}
   
         {% if site_slogan %}
-          <div class="site-slogan font-mono">{{ site_slogan }}</div>
+          <div class="site-slogan font-mono text-gray-500 italic">{{ site_slogan }}</div>
         {% endif %}
       </div>
     </div>

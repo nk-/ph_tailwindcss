@@ -12,12 +12,11 @@
 #}
 
 {%
-  set avatar_classes = [ 
-    'opacity-70',
-    'grayscale-[80%]',
+  set avatar_classes = [  
+    not attributes['data-avatar-color'] ? 'opacity-70',
+    not attributes['data-avatar-color'] ? 'grayscale-[80%]',
     'w-16',
     'rounded-full',
   ]
 %}
-
 <img{{ attributes.addClass(avatar_classes) }} />

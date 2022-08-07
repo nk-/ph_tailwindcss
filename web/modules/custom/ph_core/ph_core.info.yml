@@ -1,0 +1,5 @@
+name: Ph* core
+type: module
+description: 'Implements additional functionalities and UI elements.'
+package: 'Ph*'
+core_version_requirement: ^8.8 || ^9 || ^10

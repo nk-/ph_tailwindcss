@@ -42,45 +42,38 @@
   ]
 %}
 
-{%
-  set wrapper_classes = [
-    'cursor-pointer',
-    'mt-2',
-    'mb-8',
-    'max-w-fit',
-  ]
-%}
-
 {% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes.addClass(wrapper_classes) }}>
-      {% for item in items %}
-        {% set width = item.content['#media'].get('field_width') and item.content['#media'].get('field_width').getValue() is not empty ? item.content['#media'].get('field_width').getValue().0.value %}
-        {% if width > 0 %}        
-           {% set maxwidth = 'max-width: ' ~ width ~ 'px' %}
-           <div{{ item.attributes.setAttribute('style', maxwidth) }}>{{ item.content }}</div>
-        {% else %}
-          {% if item.attributes is not empty %}
-            <div{{ item.attributes }}>{{ item.content }}</div>
-          {% else %}
-            {{ item.content }}
-          {% endif %}
-        {% endif %}
-      {% endfor %}
-    </div>
+     {% if attributes is not empty %}
+       <div{{ attributes }}>
+     {% endif %}
+     {% for item in items %}
+       {% if item.attributes is not empty %}
+         <div{{ item.attributes }}>{{ item.content }}</div>
+       {% else %}
+         {{ item.content }}
+       {% endif %}
+        
+     {% endfor %}
+     {% if attributes is not empty %}
+       </div>
+     {% endif %}
   {% else %}
-  {#
     {% for item in items %}
-      <div{{ attributes.addClass(wrapper_classes) }}>{{ item.content }}</div>
+      {% if item.attributes is not empty %}
+        <div{{ attributes }}>{{ item.content }}</div>
+      {% else %}
+        {{ item.content }}
+      {% endif %}
     {% endfor %}
-  #}
   {% endif %}
 {% else %}
-{#
-  <div{{ attributes.addClass(wrapper_classes) }}>
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+  {% if attributes is not empty %}
+    <div{{ attributes }}>
+  {% endif %}
+  <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
     {% if multiple %}
-      <div>
+{#       <div> #}
     {% endif %}
     {% for item in items %}
       {% if item.attributes is not empty %}
@@ -90,8 +83,9 @@
       {% endif %}
     {% endfor %}
     {% if multiple %}
-      </div>
+{#       </div> #}
     {% endif %}
-  </div>
-#}
+  {% if attributes is not empty %}
+    </div>
+  {% endif %}
 {% endif %}

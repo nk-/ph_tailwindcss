@@ -19,6 +19,7 @@
  */
 #}
 
+
 {%
   set animation_classes = [
     'animate__animated',
@@ -50,8 +51,8 @@
   ]
 %}
 
-<div{{ create_attribute({'class': animation_classes}) }}>
-  <div{{ create_attribute({'class': toggle_classes}).setAttribute('role', 'button').setAttribute('data-collapsible', 'user_pane') }}>
+<div{{ create_attribute({'class': animation_classes}).setAttribute('data-staggered', 'nav_right') }}>
+  <div{{ create_attribute({'class': toggle_classes}).setAttribute('role', 'button').setAttribute('data-collapsible', 'user_pane').setAttribute('data-collapsible-parent', 'nav_right') }}> 
     {% if user_link == 'icon' %}
       <i{{ create_attribute({'class': icon_classes}) }}>person_outline</i>
     {% else %}

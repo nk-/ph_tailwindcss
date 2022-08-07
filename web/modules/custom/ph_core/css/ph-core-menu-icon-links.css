@@ -1,0 +1,11 @@
+.link-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: max-content;
+  min-width: fit-content;
+}
+
+.link-flex > *:nth-child(2) {
+  margin-left: 0.5rem;
+}

@@ -13,6 +13,17 @@
 
 {# <pre>{{ dump(element|keys) }}</pre> #}
 
+{%
+  set printable = [
+    'user_picture',
+    'account',
+    'field_name',
+    'field_link',
+    'field_about',
+    'actions', 
+  ]
+%}
+
 <form{{ attributes.addClass('ph-form', 'no-shadow', 'p-4', 'hidden').setAttribute('data-collapsible-target', 'user_register') }}>
   <div class="flex items-center justify-between space-x-8"> 
   
@@ -31,11 +42,15 @@
   </div>
   
   
-  {{ element.footer }}
+{#   {{ element.footer }} #}
   {{ element.field_about }}
   
   {{ element.actions }}
     
-{#   {{ element|without('user_picture', 'account', 'children') }}   #}
+  {% for key, property in element %}
+     {{ key not in printable and '#' not in key ? element.property }}
+  {% endfor %}  
+    
+{#   {{ element|without('user_picture', 'account', 'field_name', 'field_link', 'field_about', 'actions', 'children') }}   #}
 {#   {{ children }} #}
 </form>

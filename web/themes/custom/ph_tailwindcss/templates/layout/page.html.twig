@@ -60,9 +60,9 @@
 
 {% 
   set main_classes = [
-    'my-8',
+    'blur-sm',
     'container',
-    'mx-auto',
+    'my-16',
     'mx-auto',
     'px-4',
   ]
@@ -75,16 +75,24 @@
 
 <header{{ create_attribute({'class': header_classes}).setAttribute('role', 'banner') }}>
   <div class="container mx-auto lg:px-4 flex content-between place-content-between items-center space-x-2">
-    <div class="flex flex-col space-x-3 lg:flex-row lg:basis-full lg:space-x-8 items-center">
+    <div class="flex flex-col space-y-2 lg:space-y-0 lg:flex-row lg:basis-full lg:space-x-12 lg:items-center">
       {{ page.header }}
     </div>
     {% if page.header_right %}
-      <div class="flex items-center justify-end space-x-2">
+      <div class="flex items-center justify-end space-x-2" data-collapsible-parent-id="nav_right">
         {{ page.header_right }}
       </div>
     {% endif %}
   </div>
 </header>
+
+{# Main loading spinner #}
+<div data-spinner="main" class="animate__animated container mt-2 mx-auto px-4 text-green-pale opacity-60">
+  <svg class="absolute animate-spin -ml-1 mr-3 w-6 h-6 text-green-pale" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+  </svg>
+</div>
 
 <main{{ create_attribute({'class': main_classes}).setAttribute('role', 'main') }}>
   <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}

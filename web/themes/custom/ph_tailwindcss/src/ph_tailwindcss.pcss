@@ -26,12 +26,20 @@
     @apply mb-40
   }
 
+  svg {
+    @apply w-full h-auto
+  }
+  
   .form-input {
     @apply max-w-max text-base text-green-pale border-b border-b-transparent border-solid bg-transparent outline-none appearance-none w-full py-2 focus:border-green-pale
   }
   
   textarea.form-input {
     @apply h-auto  
+  }
+  
+  [type="submit"] {
+    @apply text-sm text-green-pale font-medium uppercase hover:text-white disabled:hover:text-green-pale hover:bg-green-pale hover:opacity-70 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed opacity-100 disabled:opacity-40 transition-opacity duration-500 max-w-max px-4 py-2 border border-solid border-green-pale
   }
 }
 
@@ -56,7 +64,6 @@
     @apply max-w-max z-10 text-green-pale text-lg relative w-full basis-[10%] 
   }
     
-   
   /**
    * Custom animation, "grow" with usage of pre-existing twcss classes. 
    *  @see templates/navigation/menu--secondary-menu.html.twig for usage example.
@@ -69,32 +76,21 @@
     @apply scale-100 visible translate-y-0 translate-x-0
   }
   
+  /**
+   *  Pane custom component, most likely "collapsible" widget.
+   *  @see templates/navigation/menu--acount.html.twig for usage example.
+   *  @see /modules/custom/ph_core/js/ph_collapsible.js
+   */
   .pane {
     @apply bg-white w-max rounded-md shadow-lg z-20 p-4 mt-2 leading-8
   }
   .pane.no-shadow {
     @apply shadow-none
   }
-  
-  /**
-   * "Collapsible pane" custom component
-   *  @see templates/navigation/menu--acount.html.twig for usage example.
-   *  @see phFactory.collapsible in src/js/default.js
-   */
-  /*
-  .collapsible-pane {
-    @apply pane z-20 p-4 mt-2 leading-8
-  }
-  .collapsible-pane.absolute {
-    @apply left-auto right-0 text-base font-light
-  }
-  */
-  
   .pane.absolute {
     @apply max-w-screen-sm left-auto right-0 text-base font-light
   }
-
-   
+  
   .item-link {
     @apply text-sm text-green-pale hover:bg-red-pale hover:text-white hover:animate-none rounded p-2
   }
@@ -175,6 +171,14 @@
   transition: .1s;
   position: absolute;
 }
+
+.ck.ck-icon,
+.ck.ck-icon *,
+.ck.ck-button .ck-button__label,
+a.ck.ck-button .ck-button__label {
+  @apply text-green-pale !important
+}
+
 .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),
 .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
 .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
