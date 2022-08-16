@@ -1,5 +1,5 @@
-name: PH* Tailwind CSS
-description: Based on Tailwind CSS starter kit theme. 
+name: Ph* Tailwind CSS
+description: Tailwind CSS implementation. 
 core_version_requirement: ^8 || ^9 | ^10
 type: theme
 base theme: stable
