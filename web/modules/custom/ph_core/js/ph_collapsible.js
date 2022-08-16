@@ -1,6 +1,6 @@
 /**
  * @file
- * Ph form elements UI.
+ * Ph Collapsible widget.
  *
  * @ingroup Ph* core scripts.
  */
@@ -54,7 +54,6 @@
                 if (!pane.classList.contains(toggleClass)) {
                   self.toggleRelated(context, toggle, pane, toggleClass);
                   event.currentTarget.classList.remove('is-active');
-                  //self.togglePane();
                 }
                 
               }, { capture: true });
