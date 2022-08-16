@@ -1,33 +1,22 @@
-# default:
-#   version: VERSION
-#   js:
-#     '//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js': { type: external, minified: true }
-#     js/ph_core.js: {}
 forms:
   version: VERSION
   js:
-    # '//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js': { type: external, minified: true }
     js/ph_forms.js: {}
-
 collapsible:
   version: VERSION
   js:
     js/ph_collapsible.js: {}
   dependencies:
-    # - core/jquery
-    # - core/jquery.once
     - core/drupal
-
-
 search:
   version: VERSION
   js:
     js/ph_search.js: {}
   dependencies:
     - core/drupal
-    
 icon_link:
   version: VERSION
   css:
     component:
       css/ph-core-menu-icon-links.css: {}
+      
