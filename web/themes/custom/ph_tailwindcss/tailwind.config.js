@@ -11,7 +11,6 @@ module.exports = {
       maxWidth: {
         'fit-2': 'calc(100% - 8rem)',
       },
-    
       'colors': {
         'green-vivid': 'rgba(163, 230, 53, 1)', 
         'green-pale': 'rgba(54, 110, 122, 0.7)',
@@ -20,14 +19,11 @@ module.exports = {
         'status-messages': 'rgba(20, 82, 66, 0.8)',
         'drupal-blue': 'rgba(0, 156, 222, 1)'
       },
-      
-           
       transitionProperty: {
         'width': 'width',
         'height': 'height',
         'spacing': 'margin, padding',
       },
-      
       typography: {
         DEFAULT: {
           css: {
@@ -68,8 +64,6 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    // require('@tailwindcss/forms'),
-    // require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/typography'),
     require('tailwind-highlightjs'),
   ],

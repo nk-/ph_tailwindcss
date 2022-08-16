@@ -110,14 +110,14 @@ function ph_core_preprocess_menu(&$variables, $hook) {
 
         if ($icon) {
           $item['title']['#icon_attributes'] = new Attribute($icon_attributes);
-          
+
           $item['url']->setOption('attributes', [
             'class' => ['link-flex'],
           ]);
 
         }
         if ($highlighted) {
-          //$item['attributes']->addClass($highlighted);
+          // $item['attributes']->addClass($highlighted);
           $item['url']->setOption('attributes', [
             'class' => [$highlighted],
           ]);

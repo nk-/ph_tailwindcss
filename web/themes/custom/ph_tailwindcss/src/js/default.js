@@ -8,29 +8,12 @@
   'use strict';
   
   document.onreadystatechange = () => {
-    
-    
+
     let timeout;
-    /*
-    let attributes = {
-      class: [
-        'animate__animated',
-      ]
-    };   
-    */
-    
     if (document.readyState == 'interactive') {
-      /*
-      //localStorage.clear();
-      const phStaggered = localStorage.getItem('phStaggered');
-      attributes.op = phStaggered ? 'remove' : 'add';
-      phFactory.staggered(attributes); 
-      */
-      
       if (typeof timeout === 'number') {
         clearTimeout(timeout);
       }
-
     }
     else if (document.readyState == 'complete') {
     
@@ -51,15 +34,6 @@
         //mainHeart.classList.add('animate__bounceIn')
         mainHeart.classList.remove('hidden');
       }
-      
-      /*
-      const phStaggered = localStorage.getItem('phStaggered');
-      attributes.op = 'remove'; //phStaggered ? 'remove' : 'add';
-      localStorage.setItem('phStaggered', 'done');
-      timeout = setTimeout((f, a) => {
-        f.staggered(a);
-      }, 4100, phFactory, attributes);
-      */
     }
   };
 
@@ -92,8 +66,6 @@
         this.removables();
         return false;
       }
-      
-      
     }
   };
 
@@ -104,19 +76,9 @@
       const staggered = [].slice.call(document.querySelectorAll('[data-staggered]'));
       if (staggered.length && attributes.class.length && attributes.op) {
         staggered.forEach(element => {
-          /*
-          if (attributes.op === 'remove') {
-            localStorage.setItem('phStaggered', 'done');
-          }
-          else {
-            localStorage.removeItem('phStaggered', 'done');
-          }
-          */
-          
           attributes.class.forEach(animate => {
             element.classList[attributes.op](animate);
           });
-        
         });
       } 
     },

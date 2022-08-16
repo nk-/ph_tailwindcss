@@ -10,7 +10,6 @@
  * @see template_preprocess_image_widget()
  */
 #}
-
 {%
   set trigger_classes = [ 
     'opacity-70',
@@ -19,27 +18,9 @@
     'rounded-full',
   ]
 %}
-
-
 <div{{ attributes }}>
   {{ data.upload }}
-{#
-  <div{{ create_attribute({'class': trigger_classes }).setAttribute('role', 'button').setAttribute('data-upload-trigger', 'user_picture') }}>
- 
-#}   
-{#  {% set data.preview.0.attributes = data.preview.0.attributes|merge({'class': trigger_classes, 'role': 'buton'}) %}  #}
-  
   {{ data.preview|without('file_size') }}
-
-  {#   </div> #}
-    
   {# Render widget data without the image preview that was output already. #}
-  
   {{ data|without('preview', 'upload') }}
-  
-{#
-  <div data-upload-target="user_picture" class="visually-hidden">
-    
-  </div>
-#}
 </div>

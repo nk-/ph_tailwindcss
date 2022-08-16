@@ -32,8 +32,6 @@
           const collapsibleId = pane.dataset.collapsibleTarget;
           if (collapsibleId && context.querySelector('[data-collapsible=' + collapsibleId + ']')) {
             
-           
-            
             const toggle = context.querySelector('[data-collapsible=' + collapsibleId + ']');
             if (toggle) {
               
@@ -42,9 +40,7 @@
               toggle.addEventListener('click', event => {
 
                 event.preventDefault();
-                //pane.classList.toggle('hidden');
-                //pane.classList.remove('hidden');
-                
+                              
                 const toggleClass = pane.dataset.collapsibleAnimate ? pane.dataset.collapsibleAnimate : 'hidden';
                 pane.classList.toggle(toggleClass);
                 

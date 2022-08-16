@@ -29,7 +29,7 @@ function ph_tailwindcss_theme_suggestions_form_alter(array &$suggestions, array 
  */
 function ph_tailwindcss_theme_suggestions_container_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#form_id'])) {
-  
+
     $suggestions[] = 'container__' . $variables['element']['#form_id'];
     if (isset($variables['element']['#id'])) {
       $id = str_replace(['edit-', '-'], ['', '_'], $variables['element']['#id']);
@@ -59,13 +59,11 @@ function ph_tailwindcss_theme_suggestions_input_alter(array &$suggestions, array
   }
   if (isset($variables['element']['#name'])) {
     $name = strpos($variables['element']['#name'], '[') !== FALSE ? str_replace(['[', ']'], ['_', ''], $variables['element']['#name']) : $variables['element']['#name'];
-    //dpm(strcspn($name , '0123456789'));
-    
-    if ($has_digit = strcspn($name , '0123456789')) { //preg_match('~-[0-9]+-~', $name)) {
+    if ($has_digit = strcspn($name, '0123456789')) {
       $name_replace = substr($name, $has_digit, 2);
       $name = str_replace($name_replace, '', $name);
     }
-    
+
     $suggestions[] = 'input__' . $variables['element']['#type'] . '__' . $name;
   }
 }
@@ -80,64 +78,37 @@ function ph_tailwindcss_theme_suggestions_image_alter(array &$suggestions, array
 }
 
 /**
- * Implements hook_theme_suggestions_hook_alter().
- */
-function ph_tailwindcss_theme_suggestions_image_widget_alter(array &$suggestions, array $variables) {
-  // dpm($variables);
-    //unset($variables['data']['file_' . $file->id()]['filename']['#prefix'] =
-   //$variables['data']['file_' . $file->id()]['filename']['#suffix'] =
-
-/*
-  if (isset($variables['style_name'])) {
-    $suggestions[] = 'image__' . $variables['style_name'];
-  }
-*/
-}
-
-/**
  * Implements hook_preprocess_HOOK().
  */
 function ph_tailwindcss_preprocess_html(&$variables) {
-  $variables['html']['#cache']['tags'][] = 'view:frontpage'; 
+  $variables['html']['#cache']['tags'][] = 'view:frontpage';
   $variables['html']['#cache']['max-age'] = 86400;
   $variables['html']['#cache']['contexts'] = [
     'views',
     'route.name',
   ];
-  
+
   $meta_data = \Drupal::service('ph_core')->processMetaData($variables);
   if (!empty($meta_data)) {
     $meta = [];
     foreach ($meta_data as $name => $content) {
-      $attribute =  strpos($name, ':') !== FALSE ? 'property' : 'name';
+      $attribute = strpos($name, ':') !== FALSE ? 'property' : 'name';
       $meta[$name] = [
         '#tag' => 'meta',
         '#attributes' => [
           'content' => $content,
         ],
       ];
-      
+
       $meta[$name]['#attributes'][$attribute] = $name;
-      
-    } 
-    
-    //dpm($meta);
-   
-    foreach ($meta as $attr => $data) {
-      $variables['page']['#attached']['html_head'][] = [$data, $attr];   
+
     }
-    
- /*   dpm($variables['page']['#attached']);
-    
-    \Drupal::service('logger.factory')->get('ph_tailwindcss')->notice('<pre>' . print_r($variables['page']['#attached']['html_head'], 1) .'</pre>'); 
-*/
-    
-    //$variables['page']['#attached']['html_head'][] = $attach; //[$meta, $attribute];
-    
+
+    foreach ($meta as $attr => $data) {
+      $variables['page']['#attached']['html_head'][] = [$data, $attr];
+    }
   }
 }
-
-
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -227,38 +198,6 @@ function ph_tailwindcss_preprocess_menu__secondary_menu(&$variables) {
     $variables['contact_form'] = $contact_form;
   }
   $variables['#attached']['library'][] = 'ph_core/collapsible';
-
-  $cid = 'ph_tailwindcss:stagerred';
-  $cache = &drupal_static(__FUNCTION__);
-  $variables['ph_init'] = TRUE;
-  if (!isset($cache)) {
-    $variables['ph_init'] = TRUE;
-  }
-  else {
-    $variables['ph_init'] = FALSE;
-  }
-  /*
-  else {
-  $variables['ph_cached'] = TRUE;
-  }
-   */
-
-  /*
-  //static &$cache = \Drupal::service('cache.static')->get($cid);
-  if ($cached) {
-  //$variables['ph_cached'] = $cache->data;
-  }
-  else {
-  $data = TRUE;
-  $cache_tags = [
-  'session',
-  'ph_staggered'
-  ];
-  \Drupal::service('cache.static')
-  ->set($cid, $data, CacheBackendInterface::CACHE_PERMANENT, $cache_tags);
-  }
-   */
-  // dpm(Cache::getBins());
 }
 
 /**
@@ -357,7 +296,7 @@ function ph_tailwindcss_preprocess_block(&$variables) {
   if ($variables['base_plugin_id'] == 'system_branding_block' && $variables['content']['site_logo']['#access'] && $variables['content']['site_logo']['#uri'] && strpos($variables['content']['site_logo']['#uri'], '.svg') !== FALSE) {
     if ($svg = \Drupal::service('ph_core')->fetchData($variables['content']['site_logo']['#uri'])) {
       if (strpos($svg, '<svg') !== FALSE) {
-        $variables['svg'] =  $svg;
+        $variables['svg'] = $svg;
       }
     }
   }

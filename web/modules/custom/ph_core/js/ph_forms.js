@@ -110,27 +110,10 @@
             if (icon) {
               icon.classList.remove('hidden');
             }
-            
-            /*
-            const timeout = buttonHandle;
-            if (typeof timeout === 'number') {
-              //clearTimeout(timeout); 
-            }
-            */
-           
           });
         }  
-        /*
-        if (element.parentForm) {
-          const timeout = buttonHandle;
-          if (typeof buttonHandle === 'number') {
-            clearTimeout(buttonHandle); 
-          }
-        }
-        */
       };
-
-    
+ 
       if (parent) {
         
         let label = parent.previousElementSibling;
@@ -161,17 +144,6 @@
             break;
           case 'input':
             inputOp(parent, element);
-            /*
-            let buttonHandle = setTimeout((form) => {
-            const button = form.querySelector('input.form-submit');
-            if (form.checkValidity()) {
-              button.removeAttribute('disabled');    
-            }
-            else {
-              button.setAttribute('disabled', '');  
-            }
-          }, 100, element.parentForm);
-          */
             break;
         }
         element.setAttribute('placeholder', setPlaceholder);
