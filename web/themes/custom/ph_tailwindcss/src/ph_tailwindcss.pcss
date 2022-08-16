@@ -18,18 +18,25 @@
     @apply pb-4
   }
 
+  a {
+    @apply relative
+  }
+  
   a:hover {
-    @apply motion-safe:animate-pulse 
+    @apply md:motion-safe:animate-pulse 
   }
- 
-  section {
-    @apply mb-40
+  
+  pre {
+    @apply container  
   }
-
   svg {
     @apply w-full h-auto
   }
   
+  section {
+    @apply mb-40
+  }
+
   .form-input {
     @apply max-w-max text-base text-green-pale border-b border-b-transparent border-solid bg-transparent outline-none appearance-none w-full py-2 focus:border-green-pale
   }
@@ -41,12 +48,29 @@
   [type="submit"] {
     @apply text-sm text-green-pale font-medium uppercase hover:text-white disabled:hover:text-green-pale hover:bg-green-pale hover:opacity-70 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed opacity-100 disabled:opacity-40 transition-opacity duration-500 max-w-max px-4 py-2 border border-solid border-green-pale
   }
+  
+  [data-drupal-selector="password-confirm-message"] {
+    @apply text-slate-400 font-light text-sm
+  }
+  [data-drupal-selector="password-match-status-text"] {
+    @apply font-medium uppercase
+  }
+  
+  [data-drupal-selector="edit-account"],
+  [data-drupal-selector="edit-field-about-wrapper"] {
+    @apply basis-full  
+  }
+  [data-drupal-selector="edit-field-name-wrapper"],
+  [data-drupal-selector="edit-field-link-wrapper"] {
+    @apply basis-[35%] md:ml-8
+  }
+
 }
 
 @layer components {
 
   [id$="-local-tasks"] ul {
-    @apply list-none list-inside
+    @apply list-none list-inside 
   }
   
   .flex-center {
@@ -64,6 +88,11 @@
     @apply max-w-max z-10 text-green-pale text-lg relative w-full basis-[10%] 
   }
     
+  .search-widget {
+    @apply form-input text-green-pale focus:border-green-pale mr-2 transition-all duration-200 w-32 md:w-48
+  }
+
+
   /**
    * Custom animation, "grow" with usage of pre-existing twcss classes. 
    *  @see templates/navigation/menu--secondary-menu.html.twig for usage example.
@@ -71,11 +100,20 @@
   .animation-grow {
     @apply transition-all duration-200 ease-linear w-56 scale-0 invisible -translate-y-2/4 translate-x-2/4
   }
-  
-  .animation-grow.animation-active {
+
+   a.animation-grow {
+     @apply visible translate-y-0 translate-x-0
+   }
+   
+   a.animation-grow::after {
+    @apply absolute left-0 top-[120%] w-full scale-x-0 h-[2px] bg-red-pale transition-all duration-300 ease-linear content-['']  -translate-y-2/4 -translate-x-2/4 
+  }
+
+  .animation-grow.animation-active,
+  a.animation-grow:hover::after {
     @apply scale-100 visible translate-y-0 translate-x-0
   }
-  
+   
   /**
    *  Pane custom component, most likely "collapsible" widget.
    *  @see templates/navigation/menu--acount.html.twig for usage example.
@@ -88,7 +126,7 @@
     @apply shadow-none
   }
   .pane.absolute {
-    @apply max-w-screen-sm left-auto right-0 text-base font-light
+    @apply max-w-[23rem] md:md:max-w-screen-sm left-auto right-0 text-base font-light
   }
   
   .item-link {
@@ -100,10 +138,10 @@
    *   @see templates/forms/input--search-input.html.twig for usage example
    */
   .fab-parent {
-    @apply flex items-center max-w-max justify-between space-x-2    
+    @apply z-30 flex items-end h-7 md:items-center max-w-max justify-between space-x-2    
   }
   .fab-wrapper {
-    @apply w-9 cursor-pointer rounded-full border-solid border-white border-4 text-center transition-transform delay-150 hover:scale-110 duration-300 max-w-none min-w-[2.25rem] max-h-[2.25rem] shadow-md hover:shadow-lg
+    @apply w-7 cursor-pointer shadow-sm h-7 rounded-full border-solid border-white border-4 text-center max-w-none md:transition-transform md:delay-150 md:hover:scale-110 md:duration-300 md:w-9 md:h-9 md:shadow-md md:hover:shadow-lg
   }
   
   .fab-wrapper.is-active {
@@ -111,7 +149,7 @@
   }
   
   .fab-icon {
-    @apply opacity-60 text-xl text-green-pale 
+    @apply text-green-pale opacity-60 text-base leading-[0] md:text-xl
   }
   
   .fab-wrapper.is-active > .fab-icon {
@@ -131,14 +169,11 @@
   /**
    * Highlight.js code highlighting
    */
-  code.hljs {
-    @apply font-light font-mono
+  .code-wrapper {
+    @apply text-base italic font-mono bg-gray-code rounded py-1 px-2 text-green-vivid hover:animate-pulse duration-75
   }
-  code.hljs.code-title {
-    @apply opacity-60
-  }
-  code.hljs.code-title > .hljs-comment {
-    @apply hover:animate-pulse duration-75 text-lime-400 font-mono
+  .code-wrapper > .hljs-comment {
+    @apply text-green-vivid
   }
   
   /**
@@ -151,6 +186,7 @@
     left: calc(50% - 1.5rem);  
   }
 
+    
   /*
   img.logo-wide {
     @apply transform-gpu transition duration-500 rounded-md grayscale-[40%] hover:grayscale-0
@@ -161,6 +197,9 @@
 /**
  * "On the fly" classes, need to be defined outside of taliwindcss layers.
 */
+.ajax-progress-throbber {
+  display: none;
+}
 .is-active {
   @apply text-red-pale
 }

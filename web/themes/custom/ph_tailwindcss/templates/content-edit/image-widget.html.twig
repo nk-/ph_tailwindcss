@@ -29,7 +29,7 @@
 #}   
 {#  {% set data.preview.0.attributes = data.preview.0.attributes|merge({'class': trigger_classes, 'role': 'buton'}) %}  #}
   
-  {{ data.preview }}
+  {{ data.preview|without('file_size') }}
 
   {#   </div> #}
     

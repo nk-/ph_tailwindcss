@@ -1,0 +1,54 @@
+{#
+/**
+ * @file
+ * Theme override to present all user data.
+ *
+ * This template is used when viewing a registered user's page,
+ * e.g., example.com/user/123. 123 being the user's ID.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.field_example'. Fields attached to a user
+ *   such as 'user_picture' are available as 'content.user_picture'.
+ * - attributes: HTML attributes for the container element.
+ * - user: A Drupal User entity.
+ *
+ * @see template_preprocess_user()
+ */
+#}
+{% if content %}
+  {%
+    set wrapper_classes = [
+      'py-8',
+    ]
+  %}
+  {% 
+    set flex_classes = [
+      'block',
+      'md:flex',
+      'md:space-x-4',
+      'md:items-center',
+      'my-4'
+    ]
+  %}
+  {%
+    set inner_classes = [
+      'prose',
+      'prose-xl',
+      'lg:prose-2xl',
+      'max-w-none',
+      'text-gray-400',
+      'font-extralight',
+    ]
+  %}
+  <article{{ attributes.addClass(wrapper_classes) }}>
+    <div{{ create_attribute({'class': flex_classes}) }}>
+      {{ content.user_picture}}
+      {{ content.field_name}}
+    </div>
+    
+    <div{{ create_attribute({'class': inner_classes}) }}>
+      {{ content|without('user_picture', 'field_name') }}
+    </div>
+  </article>
+{% endif %}

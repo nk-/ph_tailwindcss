@@ -17,12 +17,8 @@
  * - children: Contains the child elements of the page.
  */
 #}
-{{ children }}
-
-{#
 {% if children %}
-  <div class="mx-auto w-full dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+  <div data-off-canvas-main-canvas>
     {{ children }}
   </div>
 {% endif %}
-#}

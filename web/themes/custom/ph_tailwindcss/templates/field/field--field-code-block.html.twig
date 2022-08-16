@@ -48,17 +48,11 @@
   ]
 %}
 
-{%
-  set item_classes = [
-  ]
-%}
-
-
 {% if label_hidden %}
   {% if multiple %}
     <div{{ attributes.addClass(items_classes) }}>
       {% for item in items %}
-        <div{{ item.attributes.addClass(item_classes) }}>{{ item.content }}</div>
+        <div{{ item.attributes }}>{{ item.content }}</div>
       {% endfor %}
     </div>
   {% else %}
@@ -68,12 +62,12 @@
   {% endif %}
 {% else %}
   <div{{ attributes.addClass(items_classes) }}>
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+    <div{{ title_attributes }}>{{ label }}</div>
     {% if multiple %}
       <div>
     {% endif %}
     {% for item in items %}
-      <div{{ item.attributes.addClass(item_classes) }}>{{ item.content }}</div>
+      <div{{ item.attributes }}>{{ item.content }}</div>
     {% endfor %}
     {% if multiple %}
       </div>

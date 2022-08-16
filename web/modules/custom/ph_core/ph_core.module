@@ -15,12 +15,6 @@ use Drupal\Core\Template\Attribute;
  */
 function ph_core_theme() {
   return [
-
-    'ph_core__form' => [
-      'render element' => 'form',
-      'attributes' => [],
-    ],
-
     'ph_core__icon_link' => [
       'variables' => [
         'uri' => NULL,
@@ -109,20 +103,24 @@ function ph_core_preprocess_menu(&$variables, $hook) {
           '#highlighted' => $highlighted,
           '#attributes' => [
             'class' => [
-              'menu-item-with-icon',
+              'item-with-extra-fields',
             ],
           ],
-          '#icon_attributes' => new Attribute($icon_attributes),
         ];
 
         if ($icon) {
+          $item['title']['#icon_attributes'] = new Attribute($icon_attributes);
+          
           $item['url']->setOption('attributes', [
             'class' => ['link-flex'],
           ]);
 
         }
         if ($highlighted) {
-          $item['attributes']->addClass($highlighted);
+          //$item['attributes']->addClass($highlighted);
+          $item['url']->setOption('attributes', [
+            'class' => [$highlighted],
+          ]);
         }
       }
     }

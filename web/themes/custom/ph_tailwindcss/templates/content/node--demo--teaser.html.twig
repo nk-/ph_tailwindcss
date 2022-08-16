@@ -71,42 +71,28 @@
  */
 #}
 
-{% 
-  set flex_classes = [
-    'flex',
-    'items-center',
-    'space-x-8',  
-  ]
-%}
 <article{{ attributes.addClass('node') }}>
- 
-{#   <div{{ create_attribute({'class': flex_classes}) }}> #}
-    {% if content.field_images %}
-      {{ content.field_images }}
-    {% endif %}
   
-    {{ title_prefix }}
-    <h2{{ title_attributes.addClass('text-5xl', 'font-thin') }}>
-      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-    </h2>
+  {{ content.field_images }}
+  
+  {{ title_prefix }}
+  <h2{{ title_attributes.addClass('text-5xl', 'font-thin') }}>
+    {# <a href="{{ url }}" rel="bookmark">{{ label }}</a> #}
+    {{ label }}
+  </h2>
 
-     
-    {{ title_suffix }}
-
-    
-
-{#  </div> #}
+  {{ title_suffix }}
   
   <div{{ content_attributes.addClass('w-full mx-0 mb-8') }}>
     
     {{ content.body }}
+    {{ content.field_story }}
     
     <div class="mb-20">
       {{ content.field_code_block }}
     </div>
     
-    
-    {{ content|without('field_knowledge_level', 'field_images', 'body', 'field_code_block') }}
+    {{ content|without('field_knowledge_level', 'field_images', 'body', 'field_story', 'field_code_block') }}
     
   </div>
 

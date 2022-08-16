@@ -30,18 +30,14 @@
     <title>{{ head_title|safe_join(' | ') }}</title>
     <css-placeholder token="{{ placeholder_token|raw }}">
     <js-placeholder token="{{ placeholder_token|raw }}">
-  </head>
-  <body{{ attributes.addClass('bg-gray-100') }}>
-    {#
-      Keyboard navigation/accessibility link to main content section in
-      page.html.twig.
-    #}
-    <a href="#main-content" class="visually-hidden focusable">
+ </head>
+ <body{{ attributes.addClass('bg-gray-100') }}>
+   <a href="#main-content" class="visually-hidden focusable">
       {{ 'Skip to main content'|t }}
-    </a>
-    {{ page_top }}
-    {{ page }}
-    {{ page_bottom }}
-    <js-bottom-placeholder token="{{ placeholder_token|raw }}">
+   </a>
+   {{ page_top }}
+   {{ page }}
+   {{ page_bottom }}
+   <js-bottom-placeholder token="{{ placeholder_token|raw }}">
   </body>
 </html>

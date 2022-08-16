@@ -1,11 +1,12 @@
 {#
 /**
  * @file
- * Theme override for an 'input' #type form element.
+ * Theme override for an 'search' #type form element.
  *
  * Available variables:
  * - attributes: A list of HTML attributes for the input element.
  * - children: Optional additional rendered elements.
+ * - widget_id: Unique id for each instnce of this element.
  *
  * @see template_preprocess_input()
  */
@@ -21,17 +22,9 @@
 
 {% 
   set input_classes = [
-    'collapsible-search-input', 
-    'form-input',
-    'focus:border-green-pale',
-    'text-green-pale',
-    'mr-2',
-    'transition-all',
+    'search-widget',
     'scale-x-0',
     'invisible',
-    'duration-200',
-    'ease-linear',
-    'w-56',
   ]
 %}
 
@@ -40,7 +33,6 @@
     'toggle-default',
     'material-icons-outlined',
     'fab-icon',
-    'block',
   ]
 %}
 
@@ -55,10 +47,10 @@
 
 {% apply spaceless %}
 <div{{ create_attribute({'class': 'fab-parent'}) }}>
-  <input{{ attributes.addClass(input_classes).setAttribute('data-collapsible-search-target', 'ph_search_input') }} />
+  <input{{ attributes.addClass(input_classes).setAttribute('data-collapsible-search-target', widget_id) }} />
   <div{{ create_attribute({'class': animation_classes}) }}>
     <div{{ create_attribute({'class': 'fab-wrapper' }) }}>
-      <i{{ create_attribute({'class': icon_classes }).setAttribute('data-collapsible-search', 'ph_search_input').setAttribute('role', 'button') }}>search</i>
+      <i{{ create_attribute({'class': icon_classes }).setAttribute('data-collapsible-search', widget_id).setAttribute('role', 'button') }}>search</i>
       <i{{ create_attribute({'class': icon_classes }).addClass(close_icon_classes).setAttribute('role', 'button') }}>close</i>
     </div>
   </div>

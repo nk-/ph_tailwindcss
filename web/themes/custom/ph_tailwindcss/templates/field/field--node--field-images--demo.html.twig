@@ -38,7 +38,7 @@
 #}
 {%
   set title_classes = [
-    label_display == 'visually_hidden' ? 'visually-hidden',
+    label_display == 'visually_hidden' ? 'visually-hidden', 
   ]
 %}
 
@@ -46,19 +46,41 @@
   set wrapper_classes = [
     'cursor-pointer',
     'mt-2',
-    'mb-8',
-    'max-w-fit',
+    'mb-12',
+    'flex',
+    'flex-wrap',
+    'items-center',
+    'max-w-[48ch]',
   ]
 %}
+{# Warning!!! A hack to force Tailwind stores this classes that we are setting in Drupal UI. #}
+{# The following won't work! #}
+{#
+{% set css_classes = [] %}  
+{% for item in items %}
+  {% set css_class = item.content['#media'].get('field_css_class') and item.content['#media'].get('field_css_class').getValue() is not empty ? item.content['#media'].get('field_css_class').getValue().0.value : [] %}
+  {% set css_classes = css_classes|merge([css_class])  %}
+{% endfor %}
+<span{{ create_attribute({'class': css_classes}) }}> </span>
+#}
+{# So we slight-hardcode :) #}
+<span class="hidden h-0 w-0 mb-1 mx-4 mr-12 ml-4 mt-4 my-4 pt-2 max-w-[9rem] max-w-[12.5rem] md:max-w-[17.5rem] max-w-[17.25rem] md:max-w-[23rem] max-w-[2.5rem] md:max-w-[3.5rem]"></span>
 
 {% if label_hidden %}
+
+  {# This is our case! #}
   {% if multiple %}
     <div{{ attributes.addClass(wrapper_classes) }}>
+      
       {% for item in items %}
+        
         {% set width = item.content['#media'].get('field_width') and item.content['#media'].get('field_width').getValue() is not empty ? item.content['#media'].get('field_width').getValue().0.value %}
-        {% if width > 0 %}        
-           {% set maxwidth = 'max-width: ' ~ width ~ 'px' %}
-           <div{{ item.attributes.setAttribute('style', maxwidth) }}>{{ item.content }}</div>
+        {% set css_class = item.content['#media'].get('field_css_class') and item.content['#media'].get('field_css_class').getValue() is not empty ? item.content['#media'].get('field_css_class').getValue().0.value : [] %}
+        
+        {# {% set flex_class = loop.index0 == 0 ? 'basis-full' : '' %} #}
+        {% if css_class or width > 0 %}        
+          {% set maxwidth = 'max-width: ' ~ width ~ 'px' %}
+          <div{{ item.attributes.addClass(css_class) }}>{{ item.content }}</div>{# .setAttribute('style', maxwidth) #}
         {% else %}
           {% if item.attributes is not empty %}
             <div{{ item.attributes }}>{{ item.content }}</div>
@@ -68,15 +90,16 @@
         {% endif %}
       {% endfor %}
     </div>
+
+  {# Otherwise fallback to default Drupal's on other case #}
   {% else %}
-  {#
     {% for item in items %}
       <div{{ attributes.addClass(wrapper_classes) }}>{{ item.content }}</div>
     {% endfor %}
-  #}
   {% endif %}
+
+{# Otherwise fallback to default Drupal's on other case #}
 {% else %}
-{#
   <div{{ attributes.addClass(wrapper_classes) }}>
     <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
     {% if multiple %}
@@ -93,5 +116,4 @@
       </div>
     {% endif %}
   </div>
-#}
 {% endif %}

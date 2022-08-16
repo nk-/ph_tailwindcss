@@ -27,20 +27,24 @@
     <div class="{{ wrapper_class }}">
     
       {% if site_logo %}
-        <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home" class="max-h-12">
-          <img class="max-h-12" src="{{ site_logo }}" alt="{{ 'Home'|t }}" />
-        </a>
+        <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home" class="max-h-8 md:max-h-12">
+          {% if svg %} 
+            {{ svg|raw }}
+          {% else %}
+            <img class="max-h-12" src="{{ site_logo }}" alt="{{ 'Home'|t }}" />
+          {% endif %}
+         </a>
       {% endif %}
   
       <div class="flex flex-col">
         {% if site_name %}
-          <div class="text-2xl site-name">
+          <div class="text-md md:text-2xl site-name">
             <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home">{{ site_name }}</a>
           </div>
         {% endif %}
   
         {% if site_slogan %}
-          <div class="site-slogan font-mono text-gray-500 italic">{{ site_slogan }}</div>
+          <div class="site-slogan font-mono text-gray-500 italic text-[0.85rem]">{{ site_slogan }}</div>
         {% endif %}
       </div>
     </div>

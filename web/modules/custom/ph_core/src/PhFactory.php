@@ -3,6 +3,7 @@
 namespace Drupal\ph_core;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use GuzzleHttp\Client;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -12,11 +13,17 @@ use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Http\RequestStack;
+
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\Core\Cache\CacheBackendInterface;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\Html;
 
+use Drupal\node\NodeInterface;
 use Drupal\views\Views;
 use Drupal\ph_core\Form\PhLoginForm;
 
@@ -32,6 +39,33 @@ class PhFactory implements ContainerInjectionInterface, TrustedCallbackInterface
    */
   use StringTranslationTrait;
 
+   
+  /** 
+   * Almost "hackish" but we use simple node.
+   *
+   * For all metatags. Metatag module seems to massive atm. 
+   *
+   * @var integer
+   */
+  public $metaData = [
+    'nid' => 73,
+    'author' => 'nk_',
+    'display' => 'node.page.default',
+    'type' => 'video.other',
+    'video' => 'sites/default/files/2022-07/nk_solr_search.mp4',
+  ];
+
+  //const META_NID = 73; 
+  
+  /** 
+   * Display mode for page content type.
+   *
+   * @var string
+   */
+  //const META_DISPLAY = 'node.page.default';
+  
+  //const META_TYPE = 'video.other';
+  
   /**
    * The currently authenticated user.
    *
@@ -68,6 +102,49 @@ class PhFactory implements ContainerInjectionInterface, TrustedCallbackInterface
   protected $renderer;
 
   /**
+   * Drupal\Core\Messenger\MessengerInterface definition.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+  
+  /**
+   * Guzzle default options array.
+   *
+   * @var array
+   */
+  protected $guzzleOptions = [
+    'headers' => [
+      'Content-Type' => 'application/json',
+      'Accept' => 'application/json',
+      //'Authorization' => NULL,
+    ],
+    'timeout' => 5,
+    //'body' => NULL,
+  ];
+  
+  /**
+   * Guzzle\Client instance.
+   *
+   * @var \GuzzleHttp\Client
+   */
+  protected $httpClient;
+  
+  /**
+   * Drupal\Core\Http\RequestStack definition.
+   *
+   * @var \Drupal\Core\Http\RequestStack
+   */
+  protected $requestStack;
+  
+  /**
+   * Drupal\Core\Cache\CacheBackendInterface definition.
+   *
+   * @var \Drupal\Core\Cache\CacheBackendInterface
+   */
+  protected $cache;
+   
+  /**
    * PhFactory constructor.
    *
    * @param \Drupal\Core\Session\AccountInterface $current_user
@@ -81,12 +158,17 @@ class PhFactory implements ContainerInjectionInterface, TrustedCallbackInterface
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   Renderer interface.
    */
-  public function __construct(AccountInterface $current_user, EntityTypeManagerInterface $entity_type_manager, FormBuilderInterface $form_builder, EntityFormBuilderInterface $entity_form_builder, RendererInterface $renderer) {
+  public function __construct(AccountInterface $current_user, EntityTypeManagerInterface $entity_type_manager, FormBuilderInterface $form_builder, EntityFormBuilderInterface $entity_form_builder, RendererInterface $renderer, MessengerInterface $messenger, RequestStack $request_stack, CacheBackendInterface $cache) {
     $this->currentUser = $current_user;
     $this->entityTypeManager = $entity_type_manager;
     $this->formBuilder = $form_builder;
     $this->entityFormbuilder = $entity_form_builder;
     $this->renderer = $renderer;
+    $this->messenger = $messenger;
+    $this->requestStack = $request_stack;
+    $this->guzzleOptions['base_uri'] = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+    $this->httpClient = new Client($this->guzzleOptions);
+    $this->cache = $cache;
   }
 
   /**
@@ -98,7 +180,10 @@ class PhFactory implements ContainerInjectionInterface, TrustedCallbackInterface
       $container->get('entity_type.manager'),
       $container->get('form_builder'),
       $container->get('entity.form_builder'),
-      $container->get('renderer')
+      $container->get('renderer'),
+      $container->get('messenger'),
+      $container->get('request_stack'),
+      $container->get('cache.default')
     );
   }
 
@@ -112,6 +197,74 @@ class PhFactory implements ContainerInjectionInterface, TrustedCallbackInterface
     ];
   }
 
+  public function processMetaData($variables) {
+    $cid = 'ph_tailwindcss:meta';
+    static $cache = NULL;
+    $cache = $this->cache->get($cid);
+    if ($cache) {
+      return $cache->data;
+    }
+
+    $meta_data = [
+      'author' => $this->metaData['author'],
+    ];
+    $meta_node = $this->entityTypeManager->getStorage('node')->load($this->metaData['nid']);
+      
+    if ($meta_node instanceof NodeInterface) {
+      
+      $image_tid = $meta_node->hasField('field_image') && !empty($meta_node->get('field_image')->getValue()) ? $meta_node->get('field_image')->getValue()[0] : [];
+  
+      if (isset($image_tid['target_id']) && !empty($image_tid['target_id'])) {
+        if ($image = $this->entityTypeManager->getStorage('file')->load($image_tid['target_id'])) {
+          $settings = $this->entityTypeManager->getStorage('entity_view_display')->load($this->metaData['display']);
+          if ($settings->getRenderer('field_image')) {
+            $image_settings = $settings->getRenderer('field_image')->getSettings();
+            if (isset($image_settings['image_style']) && !empty($image_settings['image_style'])) {
+              if ($image_style = $this->entityTypeManager->getStorage('image_style')->load($image_settings['image_style'])) {
+                $meta_image = $image_style->buildUrl($image->getFileUri()); 
+              }
+              else {
+                $meta_image = $image->createFileUrl();
+              }
+            }
+            else {
+              $meta_image = $image->createFileUrl();
+            }
+          }
+          else {
+            $meta_image = $image->createFileUrl();
+          }
+      
+          $meta_data['og:image'] = $meta_data['twitter:image'] = $meta_image;
+        }
+      }
+    
+      $body = $meta_node->hasField('body') && !empty($meta_node->get('body')->getValue()) ? $meta_node->get('body')->getValue()[0] : [];
+      if (isset($body['value']) && !empty($body['value'])) {
+        $meta_data['description'] = $meta_data['og:description'] = $meta_data['twitter:description'] = Html::escape(strip_tags($body['value']));
+        $meta_data['keywords'] = $meta_data['description'];
+      }
+    
+      $meta_data['og:site_name'] = $meta_node->getTitle();
+      $meta_data['og:title'] = $meta_data['twitter:title'] = is_array($variables['head_title']) ? strip_tags(implode(' | ', $variables['head_title'])) : strip_tags($variables['head_title']);
+      $meta_data['og:url'] = Url::fromUserInput('/', ['absolute' => TRUE])->toString();
+      
+      if (isset($this->metaData['video'])) {
+      
+        $meta_data['og:type'] = $this->metaData['type'];
+        $meta_data['og:video'] = $meta_data['og:url'] . $this->metaData['video'];
+      }
+      
+      $cache_tags = [
+        'session',
+        'ph_tailwindcss'
+      ];
+      $this->cache->set($cid, $meta_data, CacheBackendInterface::CACHE_PERMANENT, $cache_tags);
+    
+    }
+    return $meta_data;
+  }
+    
   /**
    * Render Search widget.
    *
@@ -127,7 +280,11 @@ class PhFactory implements ContainerInjectionInterface, TrustedCallbackInterface
     $search_widget = $this->renderViewFilter($view_id, $display_id);
     if (isset($search_widget['form'])) {
       $search_widget['form']['actions']['#attributes']['class'][] = 'visually-hidden';
-      $search_widget['form']['keys']['#type'] = 'search';
+      // Essential - make sure views exposed filter has "search" for machine name.
+      // surrently that is in "Search API" view.
+      $search_widget['form']['search']['#type'] = 'search';
+      //$search_widget['form']['#attributes']['class'][] = 'hidden';
+      //$search_widget['form']['#attributes']['class'][] = 'md:block';
       return $search_widget['form'];
     }
   }
@@ -328,6 +485,40 @@ class PhFactory implements ContainerInjectionInterface, TrustedCallbackInterface
         'form_state' => $form_state,
         'form' => $form,
       ];
+    }
+  }
+  
+  /**
+   * Using Guzzle http client to fetch data.
+   *
+   * @param string $path
+   * A path of the content to fetch.
+   *
+   * @return array
+   * Content retrieved via request.
+   */
+  public function fetchData(string $path, array $guzzle_options = []) {
+
+    try {
+      if (!empty($guzzle_options)) {
+        $this->guzzleOptions = array_merge($this->guzzleOptions, $guzzle_options);
+      }
+      $response = $this->httpClient->get($path, $this->guzzleOptions);
+      if ($response->getStatusCode() == 200) {
+        $data = [];
+        $content = $response->getBody()->getContents();
+        if (is_string($content) && substr($content, 0, 1) == '{') {
+          // Return decoded data, as an array.
+          $data = Json::decode($content);
+        }
+        else {
+          $data = $content;
+        }
+        return $data;
+      }
+    }
+    catch (\Exception $e) {
+      $this->messenger->addError($e->getMessage());
     }
   }
 

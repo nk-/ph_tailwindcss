@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * A template for user forms (register/edit).
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the wrapper element.
+ * - children: The child elements of the form.
+ *
+ * @see template_preprocess_form()
+ */
+#}
+
+{{ attach_library('ph_core/forms') }}
+
+{% 
+  set wrapper_classes = [
+    'no-shadow',
+     hidden ? 'hidden',
+    'p-4', 
+  ]
+%}
+{% 
+  set form_classes = [
+    'ph-form',
+    'block',
+    'md:flex',
+    'md:flex-wrap',
+    'md:justify-start',
+    'md:items-center',
+    'md:space-y-4'
+  ]
+%}
+<div{{ create_attribute({'class': wrapper_classes, 'data-collapsible-target': 'user_register'}) }}>
+  <form{{ attributes.addClass(form_classes) }}>
+    {{ children }}
+  </form>
+</div>

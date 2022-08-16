@@ -42,30 +42,16 @@
   ]
 %}
 
-{%
-  set wrapper_classes = [ 
-    'collapsible-toggle', 
-  ]
-%}
-
-{%
-  set code_classes = [ 
-    'code-wrapper',
-  ]
-%}
-
-<div{{ create_attribute({'class': wrapper_classes }).setAttribute('role', 'button').setAttribute('data-collapsible', collapsible_id) }}>
-
- {% if label_hidden %}
+{% if label_hidden %}
   {% if multiple %}
     <div{{ attributes }}>
       {% for item in items %}
-        <pre><code{{ item.attributes.addClass(code_classes) }}>{{ item.content }}</code></pre>
+        <div{{ item.attributes }}>{{ item.content }}</div>
       {% endfor %}
     </div>
   {% else %}
     {% for item in items %}
-      <pre><code{{ item.attributes.addClass(code_classes) }}>{{ item.content }}</code></pre>
+      <div{{ attributes }}>{{ item.content }}</div>
     {% endfor %}
   {% endif %}
 {% else %}
@@ -75,12 +61,12 @@
       <div>
     {% endif %}
     {% for item in items %}
-      <pre><code{{ item.attributes.addClass(code_classes) }}>{{ item.content }}</code></pre>
+      <h2{{ item.attributes.addClass('text-5xl', 'font-thin', 'm-0') }}>
+        {{ item.content }}
+      </h2>
     {% endfor %}
     {% if multiple %}
       </div>
     {% endif %}
   </div>
 {% endif %}
-
-</div>

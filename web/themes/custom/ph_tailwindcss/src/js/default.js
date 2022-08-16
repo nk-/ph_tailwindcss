@@ -46,6 +46,12 @@
         }, 1500, spinner);
       }
       
+      const mainHeart = document.getElementById('main-heart');
+      if (mainHeart) {
+        //mainHeart.classList.add('animate__bounceIn')
+        mainHeart.classList.remove('hidden');
+      }
+      
       /*
       const phStaggered = localStorage.getItem('phStaggered');
       attributes.op = 'remove'; //phStaggered ? 'remove' : 'add';
@@ -65,6 +71,16 @@
         });
       }
       
+      if (settings.path.isFront) {
+        const logo = document.getElementById('site-logo');
+        if (logo) {
+          const paths = logo.children[0].children;
+          if (paths[1]) {
+            paths[1].setAttribute('fill', '#ef4444b3');
+          }
+        }
+      }
+      
       let factory;
       if (!factory && typeof phFactory !== 'undefined') {
         
@@ -73,8 +89,11 @@
         
         this.lazyVideo();
         this.observeSection();
+        this.removables();
         return false;
       }
+      
+      
     }
   };
 
@@ -102,15 +121,34 @@
       } 
     },
     
+    removables: () => {
+      const removables = [].slice.call(document.querySelectorAll('[data-remove]'));
+      if (removables.length) {
+        removables.forEach(element => {
+          element.addEventListener('click', event => {
+            const targetId = event.currentTarget.dataset.remove;
+            if (targetId) {
+              const target = document.querySelector('[' + targetId + ']');
+              if (target) {
+                target.remove();
+              }
+            }  
+          });
+        });
+      }
+    },
+    
     siblings: (element, parent, selector, properties) => {
-      const allToggles = [].slice.call(parent.querySelectorAll(selector));
-      allToggles.forEach(sibling => {
-        if (sibling !== element) {
-          if (properties.class && properties.op) {
-            sibling.classList[properties.op](properties.class);
+      if (parent) {
+        const allToggles = [].slice.call(parent.querySelectorAll(selector));
+        allToggles.forEach(sibling => {
+          if (sibling !== element) {
+            if (properties.class && properties.op) {
+              sibling.classList[properties.op](properties.class);
+            }
           }
-        }
-      }); 
+        });
+      } 
     },
  
     observeSection: () => {

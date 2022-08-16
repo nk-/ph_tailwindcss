@@ -25,22 +25,6 @@
       }
       
       if (Drupal.AjaxCommands && Drupal.AjaxCommands.prototype) {
-        /* // Override default View's ajax scrollTop.
-        Drupal.AjaxCommands.prototype.viewsScrollTop = function(ajax, response) {
-          var offset = $(response.selector).offset();
-          var scrollTarget = response.selector;
-          while ($(scrollTarget).scrollTop() === 0 && $(scrollTarget).parent()) {
-           scrollTarget = $(scrollTarget).parent();
-          }
-
-          if (offset.top - 10 < $(scrollTarget).scrollTop()) {
-            $(scrollTarget).animate({
-              scrollTop: offset.top - 490 // This int is the only chaange, original is 10
-             }, 500);
-          }
-        };
-        */
-    
         Drupal.AjaxCommands.prototype.phAjaxFormValidate = function(ajax, response) {
           if (response.form_build_id) {
             let wrapper;
@@ -59,7 +43,6 @@
     }
   };
 
-    
   const phFormsUi = (self, context) => {
   
     self.init = () => {
@@ -69,7 +52,8 @@
         const skip = [
           'file',
           'submit',
-          'hidden'
+          'hidden',
+          //'password'
         ];
         
         phForms.forEach(form => {
@@ -149,7 +133,14 @@
     
       if (parent) {
         
-        const label = parent.previousElementSibling;
+        let label = parent.previousElementSibling;
+        if (!label) {
+          label = parent.querySelector('label');
+        }
+        else {
+          label = label.tagName !== 'LABEL' ? parent.querySelector('label') : label;
+        }
+        
         let op, floating;
         let setPlaceholder = '';
        

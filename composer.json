@@ -1,6 +1,6 @@
 {
-    "name": "drupal/recommended-project",
-    "description": "Project template for Drupal 9 projects with a relocated document root",
+    "name": "drupal/ph_playground",
+    "description": "Based on project template for Drupal 9 projects with a relocated document root",
     "type": "project",
     "license": "GPL-2.0-or-later",
     "homepage": "https://www.drupal.org/project/drupal",
@@ -17,42 +17,25 @@
     "require": {
         "composer/installers": "^1.9",
         "cweagans/composer-patches": "^1.7",
-        "drupal/bulma": "^1.0@RC",
-        "drupal/ckeditor5_dev": "1.0.x-dev",
         "drupal/console": "^1.9",
         "drupal/core-composer-scaffold": "^9.4",
         "drupal/core-project-message": "^9.4",
         "drupal/core-recommended": "^9.4",
         "drupal/devel": "^4.1",
-        "drupal/entity_browser": "^2.6",
         "drupal/entityqueue": "^1.2",
-        "drupal/fancy_file_delete": "^2.0",
         "drupal/field_group": "^3.2",
         "drupal/gin": "^3.0@beta",
-        "drupal/jsonapi_extras": "^3.16",
-        "drupal/jsonapi_resources": "^1.0@beta",
-        "drupal/leaflet": "^2.0",
         "drupal/memcache": "^2.1",
         "drupal/paragraphs": "^1.13",
+        "drupal/token": "^1.7",
         "drupal/pathauto": "^1.9",
-        "drupal/podcast": "^1.2",
-        "drupal/prism": "^2.0",
         "drupal/search_api": "^1.17",
         "drupal/search_api_autocomplete": "^1.4",
         "drupal/search_api_db": "^1.17",
-        "drupal/smart_date": "^3.5",
-        "drupal/smart_trim": "^1.3",
-        "drupal/ssch": "^1.0",
         "drupal/stage_file_proxy": "^1.2",
+        "drupal/ckeditor5_dev": "1.0.x-dev",
         "drupal/svg_image": "^1.16",
-        "drupal/tailwindcss": "^5.0",
-        "drupal/tailwindcss_utility": "2.0.x-dev@dev",
-        "drupal/token": "^1.7",
-        "drupal/unmanaged_files": "^1.0",
-        "drupal/views_ajax_get": "^2.0",
-        "drupal/views_autocomplete_filters": "^1.3",
         "drupal/views_data_export": "^1.0",
-        "drupal/views_infinite_scroll": "^2.0",
         "drush/drush": "^11.0",
         "oomphinc/composer-installers-extender": "^2.0",
         "rector/rector": "^0.13.8"
@@ -60,9 +43,6 @@
     
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
-        "drupal/adminimal_theme": "1.x-dev",
-        "drupal/csv_importer": "1.x-dev",
-        "drupal/viewsreference": "2.x-dev",
         "kint-php/kint": "^3.3",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpspec/prophecy-phpunit": "^2.0"
@@ -93,7 +73,8 @@
         "patches": {
           "drupal/core": {
             "Relationships for rendered entities in Views - drupal.org/project/drupal/issues/2457999": "https://www.drupal.org/files/issues/2020-12-01/cannot-use-relationship-2457999-259.patch",
-            "Exposed filters get values from url - drupal.org/project/drupal/issues/3121172": "https://www.drupal.org/files/issues/2020-08-31/views-ajax-exposed-filter-3121172-5.patch"
+            "Exposed filters get values from url - drupal.org/project/drupal/issues/3121172": "https://www.drupal.org/files/issues/2020-08-31/views-ajax-exposed-filter-3121172-5.patch",
+            "Add type declaration to Html::escape() and FormattableMarkup::placeholderEscape() - drupal.org/project/drupal/issues/3255637#comment-14642516": "https://www.drupal.org/files/issues/2022-08-08/3255637-58.patch"
          
           }
         },

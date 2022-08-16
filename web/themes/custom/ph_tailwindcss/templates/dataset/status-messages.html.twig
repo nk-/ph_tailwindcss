@@ -1,0 +1,78 @@
+{#
+/**
+ * @file
+ * Theme override for status messages.
+ *
+ * Displays status, error, and warning messages, grouped by type.
+ *
+ * An invisible heading identifies the messages for assistive technology.
+ * Sighted users see a colored box. See http://www.w3.org/TR/WCAG-TECHS/H69.html
+ * for info.
+ *
+ * Add an ARIA label to the contentinfo area so that assistive technology
+ * user agents will better describe this landmark.
+ *
+ * Available variables:
+ * - message_list: List of messages to be displayed, grouped by type.
+ * - status_headings: List of all status types.
+ * - attributes: HTML attributes for the element, including:
+ *   - class: HTML classes.
+ */
+#}
+
+{%
+  set wrapper_classes = [
+    'p-8',
+    'border-2',
+    'border-transparent',
+    'rounded-xl',
+    'transition-opacity',
+    'shadow-md',
+    'opacity-100',
+    'flex',
+    'justify-between',
+    'items-center',
+    'w-full',
+  ]
+%}
+<div data-drupal-messages class="p-0">
+{% for type, messages in message_list %}
+  
+  {% set icon = type == 'error' ? 'error_outline' : 'task_alt' %}
+  {%
+    set status_classes = [
+      type == 'error' ? 'bg-red-pale' : 'bg-status-messages',
+      type == 'error' ? 'text-white' : 'text-green-vivid',
+    ]
+  %}
+  {% set wrapper_classes = wrapper_classes|merge(status_classes) %}
+  
+  <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label').addClass(wrapper_classes) }}>
+    {% if type == 'error' %}
+      <div role="alert" class="basis-11/12">
+    {% else %}
+      <div class="basis-11/12">
+    {% endif %}
+      {% if status_headings[type] %}
+        <div class="relative mb-2 mr-12 bg-none flex items-center space-x-4 max-w-fit">
+          <i class="material-icons-outlined text-4xl mb-2">{{ icon }}</i><h2 class="opacity-100">{{ status_headings[type] }}</h2>
+        </div>
+         
+      {% endif %}
+      {% if messages|length > 1 %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        {{ messages|first }}
+      {% endif %}
+{#     {% if type == 'error' %} #}
+      </div>
+{#     {% endif %} #}
+    <i role="button" data-remove="data-drupal-messages" class="material-icons-outlined text-3xl animate__animated animate__bounceIn animate__delay-1s">close</i>
+  </div>
+{% endfor %}
+
+</div>

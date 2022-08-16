@@ -64,12 +64,17 @@
     'container',
     'my-16',
     'mx-auto',
+    'min-h-screen',
     'px-4',
   ]
 %}
 
 {% 
   set footer_classes = [
+    'h-16',
+    'bg-slate-50/70',
+    'flex-center',
+    'p-4',
   ]
 %}
 
@@ -79,7 +84,7 @@
       {{ page.header }}
     </div>
     {% if page.header_right %}
-      <div class="flex items-center justify-end space-x-2" data-collapsible-parent-id="nav_right">
+      <div class="flex items-start flex-col space-y-1 absolute right-1 top-1 w-12 items-end md:w-auto md:top-auto md:relative md:space-y-0 md:flex-row md:items-center md:justify-end md:space-x-2" data-collapsible-parent-id="nav_right">
         {{ page.header_right }}
       </div>
     {% endif %}
@@ -95,7 +100,7 @@
 </div>
 
 <main{{ create_attribute({'class': main_classes}).setAttribute('role', 'main') }}>
-  <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+  <a id="main-content" tabindex="-1"></a>
     
   {{ page.help }}
   {{ page.highlighted }}
@@ -119,8 +124,8 @@
   </div>
 </main>
 
-{% if page.footer %}
+{# {% if page.footer %} #}
   <footer{{ create_attribute({'class': footer_classes}).setAttribute('role', 'contentinfo') }}>
-    {{ page.footer }}
+    <span class="hidden text-red-pale"></span>{{ page.footer }}
   </footer>
-{% endif %}
+{# {% endif %} #}
