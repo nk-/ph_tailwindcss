@@ -23,14 +23,20 @@
  * @see template_preprocess_taxonomy_term()
  */
 #}
-<div{{ attributes }}>
+{% if attributes is not empty %}
+  <div{{ attributes }}>
+{% endif %}
   {{ title_prefix }}
   {% if name and not page %}
-    {% if content.field_icon %}
-      <h3 class="flex items-between">
-        <i class="material-icons mr-1">{{ content.field_icon }}</i>
-        <span class="prose prose-slate font-mono">{{ name }}</span>
-      </h3>
+    {% if content.field_icon or content.field_image %}
+      <div class="flex items-between space-x-2">
+        {% if content.field_image %}
+          <div class="w-6">{{ content.field_image }}</div>
+        {% elseif content.field_icon %}
+          <i class="material-icons mr-1">{{ content.field_icon }}</i>
+        {% endif %}
+        <h3 class="prose prose-slate font-mono">{{ name }}</h3>
+      </div>
     {% else %}
       <h3><a href="{{ url }}">{{ name }}</a></h3>
     {% endif %}
@@ -38,4 +44,6 @@
     {{ content }}
   {% endif %}
   {{ title_suffix }}
-</div>
+{% if attributes is not empty %}
+  </div>
+{% endif %}

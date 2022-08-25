@@ -36,44 +36,20 @@
  * @see template_preprocess_field()
  */
 #}
-{%
-  set title_classes = [
-    label_display == 'visually_hidden' ? 'visually-hidden',
-  ]
+
+{% 
+  set params = {
+    'data': {
+      'label': label,
+      'items': items,
+    },
+    'items': [
+      'px-8',
+      'pb-8',
+      'prose',
+      'font-light',
+    ],
+  }
 %}
 
-{%
-  set wrapper_classes = [
-    'max-w-[2.25rem]',
-    'opacity-50',
-    'hover:opacity-100',
-    'mr-2',
-  ]
-%}
-
-{% if label_hidden %}
-  {% if multiple %}
-    <div{{ attributes.addClass(wrapper_classes) }}>
-      {% for item in items %}
-        <div{{ item.attributes }}>{{ item.content }}</div>
-      {% endfor %}
-    </div>
-  {% else %}
-    {% for item in items %}
-      <div{{ attributes.addClass(wrapper_classes) }}>{{ item.content }}</div>
-    {% endfor %}
-  {% endif %}
-{% else %}
-  <div{{ attributes.addClass(wrapper_classes) }}>
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-    {% if multiple %}
-      <div>
-    {% endif %}
-    {% for item in items %}
-      <div{{ item.attributes }}>{{ item.content }}</div>
-    {% endfor %}
-    {% if multiple %}
-      </div>
-    {% endif %}
-  </div>
-{% endif %}
+{% include directory ~ '/templates/field/field.html.twig' with params %}

@@ -1,6 +1,6 @@
 ### Ph* TailwindCSS Drupal 10 theme.
 See it in action here: https://ph-playground.store
-A front page there is actual documentation for it.
+A front page there is the actual documentation for it.
 
 #### Wanna try? On the existing Drupal site?
 - Note, this is rather a _proof-of-concept_ and originally not intended for a general usage, as contributed Drupal theme. However, it may serve as a starter kit or ideas and solutions source. 

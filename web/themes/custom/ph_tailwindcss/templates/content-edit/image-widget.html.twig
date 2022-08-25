@@ -10,14 +10,6 @@
  * @see template_preprocess_image_widget()
  */
 #}
-{%
-  set trigger_classes = [ 
-    'opacity-70',
-    'grayscale-80',
-    'w-16',
-    'rounded-full',
-  ]
-%}
 <div{{ attributes }}>
   {{ data.upload }}
   {{ data.preview|without('file_size') }}

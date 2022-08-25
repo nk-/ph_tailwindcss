@@ -43,31 +43,31 @@
 %}
 
 {%
-  set item_classes = [
-    'p-8'
+  set wrapper_classes = [ 
+    'rich-text',
   ]
 %}
 
 {% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes }}>
+    <div{{ attributes.addClass(wrapper_classes) }}>
       {% for item in items %}
-        <div{{ item.attributes.addClass(item_classes) }}>{{ item.content }}</div>
+        <div{{ item.attributes }}>{{ item.content }}</div>
       {% endfor %}
     </div>
   {% else %}
     {% for item in items %}
-      <div{{ attributes.addClass(item_classes) }}>{{ item.content }}</div>
+      <div{{ attributes }}>{{ item.content }}</div>
     {% endfor %}
   {% endif %}
 {% else %}
-  <div{{ attributes.addClass(item_classes) }}>
+  <div{{ attributes.addClass(wrapper_classes) }}>
     <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
     {% if multiple %}
       <div>
     {% endif %}
     {% for item in items %}
-      <div{{ item.attributes.addClass(item_classes) }}>{{ item.content }}</div>
+      <div{{ item.attributes }}>{{ item.content }}</div>
     {% endfor %}
     {% if multiple %}
       </div>

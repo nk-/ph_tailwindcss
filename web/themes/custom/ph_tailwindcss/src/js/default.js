@@ -29,21 +29,25 @@
         }, 1500, spinner);
       }
       
+      // Heart animation.
       const mainHeart = document.getElementById('main-heart');
       if (mainHeart) {
-        //mainHeart.classList.add('animate__bounceIn')
         mainHeart.classList.remove('hidden');
+      }
+      
+      // Our main factory in action here. 
+      let ui;
+      if (!ui && typeof phFactory !== 'undefined') {
+        ui = phFactory;
+        ui.observeSection();
+        return false;
       }
     }
   };
 
   Drupal.behaviors.phDefault = {
     attach: function(context, settings) {
-      if (typeof hljs != 'undefined') {
-        document.querySelectorAll('pre code').forEach(element => { 
-          hljs.highlightElement(element);
-        });
-      }
+     
       
       if (settings.path.isFront) {
         const logo = document.getElementById('site-logo');
@@ -62,14 +66,54 @@
         Object.assign(this, factory);
         
         this.lazyVideo();
-        this.observeSection();
+        //this.observeSection();
         this.removables();
+        
+        
+        if (typeof hljs != 'undefined') {
+          document.querySelectorAll('code').forEach(element => { 
+            //element.innerText = factory.escape(element.innerText);
+            hljs.highlightElement(element);
+          });
+        }
+        
         return false;
       }
     }
   };
 
   const phFactory = {
+
+    escape: (string) => {
+      let lookup = {
+        '&': "&amp;",
+        '"': "&quot;",
+        '\'': "&apos;",
+        '<': "&lt;",
+        '>': "&gt;"
+      };
+      return string.replace( /[&"'<>]/g, c => lookup[c] ); 
+    },
+
+    /*
+    highlight: (self) => {
+      let isContentReady = await uploadedFile__showScriptsContent()
+      if (isContentReady) {
+        hljs.highlightAll();
+      }
+      
+      async function uploadedFile__showScriptsContent() {
+        let scriptDivs = document.querySelectorAll('div[data-ckfinder-embed-type="scripts"]');
+        for (let scriptDiv of scriptDivs) {
+          let scriptUrl = scriptDiv.getAttribute('data-ckfinder-embed-url');
+          let codeElement = scriptDiv.querySelector('code');
+          let content = fetch(scriptUrl).then(response => response.text());
+          codeElement.innerText = self.escape(await content);
+        }
+        return true;
+      }
+    },
+    */
 
     staggered: (attributes) => {
     
@@ -114,16 +158,27 @@
     },
  
     observeSection: () => {
-      const sections = [].slice.call(document.querySelectorAll('.observe-section'));
+      const sections = [].slice.call(document.querySelectorAll('[data-observe]'));
       if (sections.length) {
-        if ("IntersectionObserver" in window) {
+        if ('IntersectionObserver' in window) {
           const sectionObserver = new IntersectionObserver((element, observer) => {
             element.forEach(section => {
               if (section.isIntersecting) {
+                
+                // Animate, fade in like when in view.
                 section.target.classList.remove("opacity-0");
                 section.target.classList.add('opacity-100');
+                
+                // A little extra deal for videos within observable sections.
+                // Lazu load its poster image (can be a big one!).
+                const video = section.target.querySelector('video');
+                if (video && video.dataset && video.dataset.poster) {
+                  video.setAttribute('poster', video.dataset.poster);
+                }
+                // Time to say good bye here!
                 sectionObserver.unobserve(section.target);
               }
+              
             });
           });
 
@@ -136,12 +191,12 @@
     
     lazyVideo: () => {
       
-      const lazyVideos = [].slice.call(document.querySelectorAll('.video-wrapper'));
+      const lazyVideos = [].slice.call(document.querySelectorAll('[data-video-wrapper]'));
       
       if (lazyVideos.length) {
         
         lazyVideos.forEach(lazyVideo => {
-          const playButton = lazyVideo.querySelector('.play-arrow');
+          const playButton = lazyVideo.querySelector('[data-video-play]');
           if (playButton) {
             playButton.addEventListener('click', event => {
               
@@ -151,7 +206,7 @@
               
               if (video && video.children.length) {
               
-                const overlay = parent.querySelector('.overlay-wrapper');
+                const overlay = parent.querySelector('[data-video-overlay]');
                 
                 video.addEventListener('pause', pause => {
                   // Show overlay.

@@ -1,0 +1,7 @@
+ph_core.login_form:
+  path: '/ph-core-login-form'
+  defaults:
+    _form: '\Drupal\ph_core\Form\PhLoginForm'
+    # _controller: '\Drupal\ph_core\Controller\PhCoreController::loadForm'
+  requirements:
+    _permission: 'access content'

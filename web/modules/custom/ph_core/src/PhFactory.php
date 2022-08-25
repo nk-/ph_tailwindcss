@@ -402,8 +402,10 @@ class PhFactory implements ContainerInjectionInterface, TrustedCallbackInterface
         $formObject = $this->entityTypeManager->getFormObject('user', 'register')->setEntity($user_entity);
         $vars['forms']['register_form'] = $this->formBuilder->getForm($formObject);
         $vars['forms']['register_form']['user_picture']['#title_display'] = 'invisible';
-        $vars['forms']['register_form']['field_about']['widget'][0]['#description_display'] = 'invisible';
-        $vars['forms']['register_form']['field_about']['widget'][0]['#attributes']['placeholder'] = $vars['forms']['register_form']['field_about']['widget'][0]['#title'];
+        if (isset($vars['forms']['register_form']['field_about'])) {
+          $vars['forms']['register_form']['field_about']['widget'][0]['#description_display'] = 'invisible';
+          $vars['forms']['register_form']['field_about']['widget'][0]['#attributes']['placeholder'] = $vars['forms']['register_form']['field_about']['widget'][0]['#title'];
+        }
       }
     }
     return $vars;

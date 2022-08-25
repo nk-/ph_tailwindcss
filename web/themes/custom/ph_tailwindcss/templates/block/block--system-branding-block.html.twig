@@ -13,40 +13,52 @@
  * - site_slogan: Slogan for site as defined in Site information settings.
  */
 #}
-<div{{ attributes }}>
-  {{ title_prefix }}
-  {% if label %}
-    <h2{{ title_attributes }}>{{ label }}</h2>
-  {% endif %}
-  {{ title_suffix }}
+{% if attributes is not empty %}
+  <div{{ attributes }}>
+{% endif %}
+{{ title_prefix }}
+{% if label %}
+  <h2{{ title_attributes }}>{{ label }}</h2>
+{% endif %}
+{{ title_suffix }}
   
-  {% block content %}
+{% block content %}
 
-    {% set wrapper_class = site_logo and site_name ? 'flex items-center space-x-4 min-w-max' : 'container' %}
+  {%
+    set wrapper_classes = [
+      site_logo and site_name ? 'flex',
+      site_logo and site_name ? 'items-center',
+      site_logo and site_name ? 'space-x-4',
+      site_logo and site_name ? 'min-w-max' : 'container',
+    ] 
+  %}
 
-    <div class="{{ wrapper_class }}">
-    
-      {% if site_logo %}
-        <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home" class="max-h-8 md:max-h-12">
-          {% if svg %} 
-            {{ svg|raw }}
-          {% else %}
-            <img class="max-h-12" src="{{ site_logo }}" alt="{{ 'Home'|t }}" />
-          {% endif %}
-         </a>
-      {% endif %}
+  <div{{ create_attribute({'class': wrapper_classes}) }}>
+    {% if site_logo %}
+      <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home" class="max-h-8 md:max-h-12">
+        {% if svg %} 
+          {{ svg|raw }}
+        {% else %}
+          <img class="max-h-12" src="{{ site_logo }}" alt="{{ 'Home'|t }}" />
+        {% endif %}
+       </a>
+    {% endif %}
   
+    {% if site_name or site_slogan %}
       <div class="flex flex-col">
         {% if site_name %}
-          <div class="text-md md:text-2xl site-name">
+          <div class="text-md md:text-2xl">
             <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home">{{ site_name }}</a>
           </div>
         {% endif %}
   
         {% if site_slogan %}
-          <div class="site-slogan font-mono text-gray-500 italic text-[0.85rem]">{{ site_slogan }}</div>
+          <div class="font-mono text-gray-500 italic text-sm">{{ site_slogan }}</div>
         {% endif %}
       </div>
-    </div>
-  {% endblock %}
-</div>
+    {% endif %}
+  </div>
+{% endblock %}
+{% if attributes is not empty %}
+  </div>
+{% endif %}

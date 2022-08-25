@@ -17,21 +17,24 @@
 {%
   set item_classes = [
     'mr-2',
-    'tailwind-tab'
   ]
 %}
-
 {%
   set link_classes = [
-    'inline-block',
-    'p-4',
-    'rounded-t-lg',
-    'border-b-2',
-    'border-transparent',
+    'px-4',
+    'pb-2',
+    'text-gray-500',
     'hover:text-gray-600',
     'hover:border-gray-300',
-    'dark:hover:text-gray-300',
+    'hover:animate-none',
+    'border-solid',
+    'border-b-2',
+    'border-transparent',
+    is_active ? 'is-active',
+    is_active ? 'border-red-pale',
   ]
 %}
-
-<li{{ attributes.addClass(item_classes) }}>{{ link }}</li>
+<li{{ attributes.addClass(item_classes) }}>
+  {% set href = path(link['#url'].getRouteName(), link['#url'].getRouteParameters()) %}
+  <a{{ create_attribute({'class': link_classes}).setAttribute('href', href) }}>{{ link['#title'] }}</a>
+</li>

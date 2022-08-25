@@ -43,6 +43,9 @@ class AjaxResponseSubscriber implements EventSubscriberInterface {
         'form_id' => $form_id,
         'form_build_id' => $form_build_id,
       ];
+      
+      //\Drupal::service('logger.factory')->get('ph_core')->notice('<pre>' . print_r($response, 1) .'</pre>');
+      
     }
   }
 

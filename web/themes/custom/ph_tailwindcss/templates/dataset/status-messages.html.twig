@@ -36,43 +36,39 @@
   ]
 %}
 <div data-drupal-messages class="p-0">
-{% for type, messages in message_list %}
+  {% for type, messages in message_list %}
   
-  {% set icon = type == 'error' ? 'error_outline' : 'task_alt' %}
-  {%
-    set status_classes = [
-      type == 'error' ? 'bg-red-pale' : 'bg-status-messages',
-      type == 'error' ? 'text-white' : 'text-green-vivid',
-    ]
-  %}
-  {% set wrapper_classes = wrapper_classes|merge(status_classes) %}
+    {% set icon = type == 'error' ? 'error_outline' : 'task_alt' %}
+    {%
+      set status_classes = [
+        type == 'error' ? 'bg-red-pale' : 'bg-status-messages',
+        type == 'error' ? 'text-white' : 'text-green-vivid',
+      ]
+    %}
+    {% set wrapper_classes = wrapper_classes|merge(status_classes) %}
   
-  <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label').addClass(wrapper_classes) }}>
-    {% if type == 'error' %}
-      <div role="alert" class="basis-11/12">
-    {% else %}
-      <div class="basis-11/12">
-    {% endif %}
-      {% if status_headings[type] %}
-        <div class="relative mb-2 mr-12 bg-none flex items-center space-x-4 max-w-fit">
-          <i class="material-icons-outlined text-4xl mb-2">{{ icon }}</i><h2 class="opacity-100">{{ status_headings[type] }}</h2>
-        </div>
-         
-      {% endif %}
-      {% if messages|length > 1 %}
-        <ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
+    <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label').addClass(wrapper_classes) }}>
+      {% if type == 'error' %}
+        <div role="alert" class="basis-11/12">
       {% else %}
-        {{ messages|first }}
+        <div class="basis-11/12">
       {% endif %}
-{#     {% if type == 'error' %} #}
+        {% if status_headings[type] %}
+          <div class="relative mb-2 mr-12 bg-none flex items-center space-x-4 max-w-fit">
+            <i class="material-icons-outlined text-4xl mb-2">{{ icon }}</i><h2 class="opacity-100">{{ status_headings[type] }}</h2>
+          </div>
+        {% endif %}
+        {% if messages|length > 1 %}
+          <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          {{ messages|first }}
+        {% endif %}
       </div>
-{#     {% endif %} #}
-    <i role="button" data-remove="data-drupal-messages" class="material-icons-outlined text-3xl animate__animated animate__bounceIn animate__delay-1s">close</i>
-  </div>
-{% endfor %}
-
+      <i role="button" data-remove="data-drupal-messages" class="material-icons-outlined text-3xl animate__animated animate__bounceIn animate__delay-1s">close</i>
+    </div>
+  {% endfor %}
 </div>

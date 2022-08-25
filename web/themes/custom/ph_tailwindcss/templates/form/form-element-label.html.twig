@@ -23,10 +23,8 @@
     'text-xs',
     'hidden',
     'md:block',
-    'md:text-sm',
   ]
 %}
-{# title_display == 'invisible' ? 'visually-hidden', #}
 {% if title is not empty or required -%}
   <label{{ attributes.addClass(classes) }}>{{ title }}</label>
 {%- endif %}

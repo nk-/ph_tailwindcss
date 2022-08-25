@@ -25,13 +25,4 @@
     has_parent ? 'form-wrapper',
   ]
 %}
-
-
-<div{{ attributes.addClass(classes).removeClass('filter-wrapper') }}>
-  {{ children }}
-{#
-  {% for form_element in element %}
-    {{ dump(form_element) }}
-  {% endfor %}
-#}
-</div>
+<div{{ attributes.addClass(classes).removeClass('filter-wrapper') }}>{{ children }}</div>

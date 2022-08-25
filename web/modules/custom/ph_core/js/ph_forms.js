@@ -26,6 +26,7 @@
       
       if (Drupal.AjaxCommands && Drupal.AjaxCommands.prototype) {
         Drupal.AjaxCommands.prototype.phAjaxFormValidate = function(ajax, response) {
+          console.log(response);
           if (response.form_build_id) {
             let wrapper;
             if (ajax.wrapper) {

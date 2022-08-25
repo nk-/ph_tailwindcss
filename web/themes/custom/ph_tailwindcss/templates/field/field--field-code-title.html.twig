@@ -36,40 +36,34 @@
  * @see template_preprocess_field()
  */
 #}
+
 {%
   set title_classes = [
     label_display == 'visually_hidden' ? 'visually-hidden',
   ]
 %}
-
-{%
-  set wrapper_classes = [ 
-    'collapsible-toggle', 
-  ]
-%}
-
 {%
   set code_classes = [ 
     'code-wrapper',
   ]
 %}
 
-<div{{ create_attribute({'class': wrapper_classes }).setAttribute('role', 'button').setAttribute('data-collapsible', collapsible_id) }}>
-
- {% if label_hidden %}
+{% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes }}>
+    <div{{ attributes.setAttribute('role', 'button').setAttribute('data-collapsible', collapsible_id) }}>
       {% for item in items %}
         <pre><code{{ item.attributes.addClass(code_classes) }}>{{ item.content }}</code></pre>
       {% endfor %}
     </div>
   {% else %}
-    {% for item in items %}
-      <pre><code{{ item.attributes.addClass(code_classes) }}>{{ item.content }}</code></pre>
-    {% endfor %}
+    <div{{ attributes.setAttribute('role', 'button').setAttribute('data-collapsible', collapsible_id) }}>
+      {% for item in items %}
+        <pre><code{{ item.attributes.addClass(code_classes) }}>{{ item.content }}</code></pre>
+      {% endfor %}
+    </div>
   {% endif %}
 {% else %}
-  <div{{ attributes }}>
+  <div{{ attributes.setAttribute('role', 'button').setAttribute('data-collapsible', collapsible_id) }}>
     <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
     {% if multiple %}
       <div>
@@ -80,7 +74,5 @@
     {% if multiple %}
       </div>
     {% endif %}
-  </div>
+  </div>  
 {% endif %}
-
-</div>

@@ -27,9 +27,7 @@
   {%- if title is not empty -%}
     <h3>{{ title }}</h3>
   {%- endif -%}
-
   {%- if items -%}
-    
     {% 
       set back_icon_classes = [
         'px-4',
@@ -43,10 +41,9 @@
     %}
 
     <i{{ create_attribute({'class': back_icon_classes}).setAttribute('role', 'button').setAttribute('data-back-icon-target', 'west') }}>west</i>
-    
     <{{ list_type }}{{ attributes.setAttribute('data-collapsible-hide', 'user_pane') }}>
       {%- for key, item in items -%}
-        {% set icon = key == 'user.page' ? 'login' : key|replace({'user.': ''}) %}
+        {# {% set icon = key == 'user.page' ? 'login' : key|replace({'user.': ''}) %} #}
         <li{{ item.attributes.addClass('item-link') }}>
           {# <i class="material-icons-outlined text-base">{{ icon }}</i> #}
           {{ item.value }}

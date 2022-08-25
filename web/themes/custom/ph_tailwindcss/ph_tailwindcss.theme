@@ -178,12 +178,20 @@ function ph_tailwindcss_preprocess_field(&$variables) {
   $code_fields = [
     'field_code_title' => 'data-collapsible',
     'field_code' => 'data-collapsible-target',
+    'field_code_body'=> 'data-collapsible-target',
   ];
   if (in_array($variables['field_name'], array_keys($code_fields))) {
     if (isset($variables['element']['#object'])) {
       $variables['collapsible_id'] = 'collapsible-paragraph-' . $variables['element']['#object']->id();
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function ph_tailwindcss_preprocess_menu_local_task(&$variables) {
+  //dpm($variables); 
 }
 
 /**
@@ -282,7 +290,7 @@ function ph_tailwindcss_preprocess_media__video(&$variables) {
         $style = \Drupal::service('entity_type.manager')->getStorage('image_style')->load($image_style);
 
         if ($original_image = $field_media_image['#item']->entity->getFileUri()) {
-          $variables['elements']['field_media_video_file'][$key]['#attributes']['poster'] = $style->buildUrl($original_image);
+          $variables['elements']['field_media_video_file'][$key]['#attributes']['data-poster'] = $style ? $style->buildUrl($original_image) : $original_image;
         }
       }
     }

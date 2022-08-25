@@ -38,36 +38,77 @@
 #}
 {%
   set title_classes = [
-    label_display == 'visually_hidden' ? 'visually-hidden',
+    label_display == 'visually_hidden' ? 'visually-hidden', 
   ]
 %}
 
 {%
-  set items_classes = [
-    'container'
+  set wrapper_classes = [
+    'mt-2',
+    'mb-8',
+    'md:mb-12',
+    'flex',
+    'items-center',
+    'flex-wrap',
+    'max-w-[48ch]',
   ]
 %}
 
+{# 
+  Warning!!! Hardcode to force Tailwind stores this classes
+  that we are setting in Drupal UI. on the Media:image entity form within CSS class field.
+#}
+{% apply spaceless %}
+<div class="hidden visually-hidden pt-2 mr-12 ml-4 mt-4 max-w-16 md:max-w-24"><span class="max-w-10 md:max-w-12"><span class="max-w-8 md:max-w-10"><span class="max-w-2 md:max-w-4"></span></span></span></div>
+{% endapply %}
+
 {% if label_hidden %}
+
+  {# This is our case! #}
   {% if multiple %}
-    <div{{ attributes.addClass(items_classes) }}>
+    <div{{ attributes.addClass(wrapper_classes) }}>
+      
       {% for item in items %}
-        <div{{ item.attributes }}>{{ item.content }}</div>
+        
+        {%
+          set css_classes = item.content['#media'].get('field_css_class') and item.content['#media'].get('field_css_class').getValue() is not empty ? item.content['#media'].get('field_css_class').getValue().0.value|split(' ') : [
+            'max-w-12',
+            'md:max-w-16'
+          ]
+        %}
+        
+        {% if css_classes %}        
+          <div{{ item.attributes.addClass(css_classes) }}>{{ item.content }}</div>
+        {% else %}
+          {% if item.attributes is not empty %}
+            <div{{ item.attributes }}>{{ item.content }}</div>
+          {% else %}
+            {{ item.content }}
+          {% endif %}
+        {% endif %}
       {% endfor %}
     </div>
+
+  {# Otherwise fallback to default Drupal's #}
   {% else %}
     {% for item in items %}
-      <div{{ attributes.addClass(items_classes) }}>{{ item.content }}</div>
+      <div{{ attributes.addClass(wrapper_classes) }}>{{ item.content }}</div>
     {% endfor %}
   {% endif %}
+
+{# Otherwise fallback to default Drupal's #}
 {% else %}
-  <div{{ attributes.addClass(items_classes) }}>
-    <div{{ title_attributes }}>{{ label }}</div>
+  <div{{ attributes.addClass(wrapper_classes) }}>
+    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
     {% if multiple %}
       <div>
     {% endif %}
     {% for item in items %}
-      <div{{ item.attributes }}>{{ item.content }}</div>
+      {% if item.attributes is not empty %}
+        <div{{ item.attributes }}>{{ item.content }}</div>
+      {% else %}
+        {{ item.content }}
+      {% endif %}
     {% endfor %}
     {% if multiple %}
       </div>

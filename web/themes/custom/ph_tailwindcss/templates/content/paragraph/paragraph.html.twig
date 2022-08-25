@@ -38,34 +38,19 @@
  * @ingroup themeable
  */
 #}
-
-
 {%
   set classes = [
     'paragraph',
     'paragraph--type--' ~ paragraph.bundle|clean_class,
     view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
-    not paragraph.isPublished() ? 'paragraph--unpublished',
-    not content.field_code_title['#items'] ? 'flex',
-    not content.field_code_title['#items'] ? 'justify-between',
-    not content.field_code_title['#items'] ? 'items-center',
-    'max-w-fit',
-    'mb-2',
+    not paragraph.isPublished() ? 'paragraph--unpublished', 
+    'rich-text',
   ]
 %}
-
-{% set has_link = paragraph.hasField('field_link') and paragraph.get('field_link').getValue() is not empty %}
-{% set has_title = paragraph.hasField('field_code_title') and paragraph.get('field_code_title').getValue() is not empty %}
-{% if has_title or has_link %}
-  {% block paragraph %}
-    <div{{ attributes.addClass(classes) }}>
-      {% block content %}
-        {% if chas_title or not has_link %}
-          {{ content|without('field_icon') }}
-        {% else %}
-          {{ content }}
-        {% endif %}
-      {% endblock %}
-    </div>
-  {% endblock paragraph %}
-{% endif %}
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+  </div>
+{% endblock paragraph %}

@@ -27,7 +27,11 @@
   ]
 %}
 
-<div{{ wrapper_attributes }}>
-  <textarea{{ attributes.addClass('form-input') }}>{{ value }}</textarea>
-  <i{{ create_attribute({'class': icon_classes}).setAttribute('role', 'button') }}>close</i>
-</div>
+{% if wrapper_attributes is not empty %}
+  <div{{ wrapper_attributes }}>
+{% endif %}
+<textarea{{ attributes.addClass('form-input') }}>{{ value }}</textarea>
+<i{{ create_attribute({'class': icon_classes}).setAttribute('role', 'button') }}>close</i>
+{% if wrapper_attributes is not empty %}
+  </div>
+{% endif %}

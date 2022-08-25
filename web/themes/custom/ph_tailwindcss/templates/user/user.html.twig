@@ -33,12 +33,8 @@
   %}
   {%
     set inner_classes = [
-      'prose',
-      'prose-xl',
-      'lg:prose-2xl',
-      'max-w-none',
-      'text-gray-400',
-      'font-extralight',
+      'rich-text',
+      'py-0',
     ]
   %}
   <article{{ attributes.addClass(wrapper_classes) }}>
@@ -46,7 +42,6 @@
       {{ content.user_picture}}
       {{ content.field_name}}
     </div>
-    
     <div{{ create_attribute({'class': inner_classes}) }}>
       {{ content|without('user_picture', 'field_name') }}
     </div>

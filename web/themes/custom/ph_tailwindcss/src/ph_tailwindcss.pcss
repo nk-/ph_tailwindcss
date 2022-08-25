@@ -68,10 +68,6 @@
 }
 
 @layer components {
-
-  [id$="-local-tasks"] ul {
-    @apply list-none list-inside 
-  }
   
   .flex-center {
     @apply flex items-center justify-center
@@ -92,7 +88,16 @@
     @apply form-input text-green-pale focus:border-green-pale mr-2 transition-all duration-200 w-32 md:w-48
   }
 
-
+  /**
+   * Typography plugin usage, a "super-class" based on
+   * a blend of prose classes and standard tw classes. 
+   *  @see templates/content/paragraph.html.twig or templates/field/field--node--body.html.twig
+   *  for usage example.
+   */
+  .rich-text {
+    @apply prose prose-lg lg:prose-xl prose-img:rounded-xl max-w-none text-gray-400 text-lg pt-0 pb-2 md:pt-8 md:pb-8 font-extralight 
+  }
+  
   /**
    * Custom animation, "grow" with usage of pre-existing twcss classes. 
    *  @see templates/navigation/menu--secondary-menu.html.twig for usage example.
@@ -135,7 +140,8 @@
   
   /**
    * "Fab" custom component
-   *   @see templates/forms/input--search-input.html.twig for usage example
+   *  @see templates/forms/input--search-input.html.twig 
+   *  or templates/navigation/menu--secondary-menu.html.twig for usage examples.
    */
   .fab-parent {
     @apply z-30 flex items-end h-7 md:items-center max-w-max justify-between space-x-2    
@@ -159,18 +165,22 @@
   /**
    * Drupal's admin tabs
    */
+/*
   .tailwind-tab a {
     @apply inline-block px-4 py-2 rounded-t-lg border-solid border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300
   }
+*/
+/*
   .tailwind-tab a.is-active {
-    @apply border-blue-600 dark:text-blue-500 dark:border-blue-500
+    @apply border-blue-600 text-blue-500 border-blue-500
   }
   
+*/
   /**
    * Highlight.js code highlighting
    */
   .code-wrapper {
-    @apply text-base italic font-mono bg-gray-code rounded py-1 px-2 text-green-vivid hover:animate-pulse duration-75
+    @apply text-sm md:text-base italic font-mono bg-gray-code rounded py-1 px-2 text-green-vivid hover:animate-pulse duration-75
   }
   .code-wrapper > .hljs-comment {
     @apply text-green-vivid
@@ -186,12 +196,7 @@
     left: calc(50% - 1.5rem);  
   }
 
-    
-  /*
-  img.logo-wide {
-    @apply transform-gpu transition duration-500 rounded-md grayscale-[40%] hover:grayscale-0
-  }
-  */
+ 
 }
 
 /**

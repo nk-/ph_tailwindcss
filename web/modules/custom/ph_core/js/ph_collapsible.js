@@ -14,6 +14,7 @@
       if (!ui && typeof phToggle !== 'undefined') {
         ui = phToggle(phToggle, context);
         ui.toggle();
+        //ui.ajaxLoad();
         return false;
       }
     }
@@ -102,6 +103,19 @@
         }
       }   
     };
+    
+    self.ajaxLoad = () => {
+      fetch('/ph-core-login-form') //.then((response) => console.log(response.body)); //response.json()).then((data) => console.log(data));
+      .then((response) => {
+        console.log(response.json());
+        return response.json(); //body.getReader().read();
+      });
+      //.then((result) => {
+      //  console.log(result);
+      //  return result;
+      //});
+    };
+   
     
     /*
     self.togglePane = () => {

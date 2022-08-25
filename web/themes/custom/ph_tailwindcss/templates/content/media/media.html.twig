@@ -10,13 +10,13 @@
  * @see template_preprocess_media()
  */
 #}
-{% if attributes is not empty %}
-  <div{{ attributes }}>
-    {{ title_suffix.contextual_links }}
-    {% if content %}
-      {{ content }}
-    {% endif %}
-  </div>
-{% else %}
+{% if content %}
+  {% if attributes is not empty %}
+    <div{{ attributes }}>
+  {% endif %}
   {{ content }}
+  {{ title_suffix.contextual_links }}
+  {% if attributes is not empty %}
+    </div>
+  {% endif %}
 {% endif %}

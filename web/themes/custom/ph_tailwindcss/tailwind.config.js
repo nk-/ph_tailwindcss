@@ -7,9 +7,19 @@ module.exports = {
   }],
   theme: {
     extend: {
-      
+      inset: {
+        'center-1.5': 'calc(50% - 1.5rem)',
+      },
       maxWidth: {
         'fit-2': 'calc(100% - 8rem)',
+        '1': '1.85rem',
+        '2': '2.75rem',
+        '4': '4rem',
+        '8': '8.125rem',
+        '10': '10rem',
+        '12': '12.25rem',
+        '16': '16rem',
+        '24': '24rem',
       },
       'colors': {
         'green-vivid': 'rgba(163, 230, 53, 1)', 

@@ -13,10 +13,9 @@
 *     source tag.
 */
 #}
-
+ 
 {% 
-  set wrapper_classes = [
-    'video-wrapper',
+  set wrapper_classes = [ 
     'relative',
     'w-full',
   ]
@@ -30,7 +29,6 @@
 
 {%
   set overlay_classes = [
-    'overlay-wrapper',
     'w-full',
     'bg-slate-100',
     'absolute',
@@ -38,55 +36,34 @@
     'inset-0',
     'opacity-20',
   ]
-
 %}
-{#
-  'animate-pulse',
-    'hover:animate-none',
-#}
+
 {%
   set icon_classes = [
-       'play-arrow',
-    'material-icons',
-    'cursor-pointer',
-    'max-w-fit',
-    'max-h-fit',
-    'text-5xl',
+    'inset-center-1.5',
+    'top-1/2',
+    'right-auto',
+    'bottom-auto',
     'rounded-full',
+    'bg-gray-500',
+    'opacity-80',
+    'text-5xl',
     'text-lime-200',
     'absolute',
     'z-20',
-    'top-1/2',
+    'h-12',
+    'w-12',
+    'animate-none',
+    'hover:animate-pulse',
   ]
 %}
 
-{%
-  set _icon_classes = [
-    'play-arrow',
-    'material-icons',
-    'cursor-pointer',
-    'max-w-fit',
-    'max-h-fit',
-    'text-5xl',
-    'rounded-full',
-    'text-lime-200',
-    'absolute',
-    'z-20',
-    'top-1/2',
-    'left-2/4',
-    'translate-x-[-50%]',
-    'translate-y-[-50%]',
-    'transform-gpu',
-   
-  ]
-%}
-
-<div{{ create_attribute({'class': wrapper_classes}) }}>
-  <div{{ create_attribute({'class': overlay_classes}) }}></div>
-  <i{{ create_attribute({'class': icon_classes}) }}>play_arrow</i>
-
-  <video {{ attributes.addClass(video_classes) }}> {# .setAttribute('preload', 'true') }}> #}
-  
+<div{{ create_attribute({'class': wrapper_classes}).setAttribute('data-video-wrapper', '') }}>
+  <div{{ create_attribute({'class': overlay_classes}).setAttribute('data-video-overlay', '') }}></div>
+  <div{{ create_attribute({'class': icon_classes}).setAttribute('role', 'button').setAttribute('data-video-play', '') }}>
+    <svg xmlns="http://www.w3.org/2000/svg" class="text-lime-200 bg-gray-500 fill-lime-200 rounded-full" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M8 5v14l11-7z"/></svg>
+  </div>  
+  <video {{ attributes.addClass(video_classes).setAttribute('preload', 'metadata') }}>
     {% for file in files %}
       <source {{ file.source_attributes }} />
     {% endfor %}

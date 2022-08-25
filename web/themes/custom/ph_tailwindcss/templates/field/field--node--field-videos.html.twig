@@ -36,24 +36,12 @@
  * @see template_preprocess_field()
  */
 #}
+
 {%
   set title_classes = [
     label_display == 'visually_hidden' ? 'visually-hidden',
   ]
 %}
-
-{#
-{%
-  set grid_classes = [
-    'flex',
-    'flex-wrap',
-    'items-between',
-    'flex-col',
-    'lg:flex-row',
-    'lg:space-x-8',
-  ]
-%}
-#}
 
 {%
   set grid_classes = [
@@ -61,10 +49,8 @@
   ]
 %}
 
-
 {%
   set brick_classes = [
-    
     'drop-shadow-lg',
     'bg-white',
     'rounded-lg',
@@ -72,8 +58,6 @@
     'lg:mb-0',
   ]
 %}
-
-{# multiple and items|length > 1 ? 'w-[48%]' : 'w-full', #}
 
 {% if label_hidden %}
   {% if multiple %}

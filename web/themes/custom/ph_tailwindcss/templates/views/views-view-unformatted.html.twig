@@ -19,7 +19,6 @@
   <h3>{{ title }}</h3>
 {% endif %}
 {% for row in rows %}
-
   {%
     set row_classes = [
       loop.index0 > 0 ? 'observe-section',
@@ -31,7 +30,7 @@
       default_row_class ? 'views-row',
     ]
   %}
-  <section{{ row.attributes.addClass(row_classes) }}>
+  <section{{ row.attributes.addClass(row_classes).setAttribute('data-observe', '') }}>
     {{- row.content -}}
   </section>
 {% endfor %}
