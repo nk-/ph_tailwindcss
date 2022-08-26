@@ -23,6 +23,6 @@
 !/web/themes/custom/
 /web/themes/custom/*
 !/web/themes/custom/ph_tailwindcss/
-## Ignore files starting with "__" within theme.
+## Ignore files and folders starting with "__" within theme.
 /web/themes/custom/ph_tailwindcss/__*
 /web/themes/custom/ph_tailwindcss/**/__*
