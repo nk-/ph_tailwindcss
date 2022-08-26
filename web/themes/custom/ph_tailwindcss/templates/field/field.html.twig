@@ -47,17 +47,19 @@
 {% set title_tag = params.data and params.data.tag ? params.data.tag : 'div' %}
 
 {% if label_hidden %}
+  
   {% if multiple %}
     {% if attributes is not empty or params.wrapper %}
       {% if params.wrapper %}
         <div{{ attributes.addClass(params.wrapper) }}>
-      {% else %}
+      {% elseif attributes is not empty %}
         <div{{ attributes }}>
       {% endif %}
     {% endif %}
+    
     {% for item in items %}
       {% if item.attributes is not empty or params.items %}
-        {% if params.wrapper %}
+        {% if params.items %}
           <{{ title_tag }}{{ item.attributes.addClass(params.items) }}>{{ item.content }}</{{ title_tag }}>
         {% else %}
           <{{ title_tag }}{{ item.attributes }}>{{ item.content }}</{{ title_tag }}>
@@ -69,6 +71,7 @@
     {% if attributes is not empty or params.wrapper %}
       </div>
     {% endif %}
+
   {% else %}
     {% for item in items %}
       {% if attributes is not empty or params.wrapper %}
@@ -86,17 +89,20 @@
   
   {% if attributes is not empty or params.wrapper %}
     {% if params.wrapper %}
-      <div{{ attributes.addClass(params.wrapper) }}>{{ item.content }}</div>
-    {% else %}
-      <div{{ attributes }}>{{ item.content }}</div>
+      <div{{ attributes.addClass(params.wrapper) }}>
+    {% elseif attributes is not empty %}
+      <div{{ attributes }}>
     {% endif %}
   {% endif %}
   
   <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
   
+  {#
   {% if multiple %}
-    <div>
+    <div class="multiple">
   {% endif %}
+  #}
+  
   {% for item in items %}
     {% if item.attributes is not empty or params.items %}
       {% if params.items %}
@@ -108,12 +114,14 @@
       {{ item.content }}
     {% endif %}
   {% endfor %}
+  
+  {#
   {% if multiple %}
     </div>
   {% endif %}
+  #}
+  
   {% if attributes is not empty or params.wrapper %}
     </div>
   {% endif %}
 {% endif %}
-
-{# {% endblock %} #}

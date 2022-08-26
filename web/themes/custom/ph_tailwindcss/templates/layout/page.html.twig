@@ -124,8 +124,8 @@
   </div>
 </main>
 
-{# {% if page.footer %} #}
+{% if page.footer %}
   <footer{{ create_attribute({'class': footer_classes}).setAttribute('role', 'contentinfo') }}>
     <span class="hidden text-red-pale"></span>{{ page.footer }}
   </footer>
-{# {% endif %} #}
+{% endif %}
