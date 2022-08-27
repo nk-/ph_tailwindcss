@@ -1,7 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   mode: 'jit',
-  content: ["**/*.twig"],
+  content: [
+    "**/*.twig",
+    "**/*.svg",
+  ],
   safelist: [{
     pattern: /hljs+/,
   }],
@@ -11,6 +14,7 @@ module.exports = {
         'center-1.5': 'calc(50% - 1.5rem)',
       },
       maxWidth: {
+        'fit-1': 'calc(100% - 1rem)',
         'fit-2': 'calc(100% - 8rem)',
         '1': '1.85rem',
         '2': '2.75rem',

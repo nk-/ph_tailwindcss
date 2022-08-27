@@ -28,7 +28,7 @@
     set wrapper_classes = [
       site_logo and site_name ? 'flex',
       site_logo and site_name ? 'items-center',
-      site_logo and site_name ? 'space-x-4',
+      site_logo and site_name ? 'space-x-2 md:space-x-4',
       site_logo and site_name ? 'min-w-max' : 'container',
     ] 
   %}
@@ -53,7 +53,7 @@
         {% endif %}
   
         {% if site_slogan %}
-          <div class="font-mono text-gray-500 italic text-sm">{{ site_slogan }}</div>
+          <div class="font-mono text-gray-500 italic text-xs md:text-sm">{{ site_slogan }}</div>
         {% endif %}
       </div>
     {% endif %}

@@ -26,6 +26,10 @@
     @apply md:motion-safe:animate-pulse 
   }
   
+  section {
+    @apply mb-40
+  }
+
   pre {
     @apply container  
   }
@@ -33,19 +37,21 @@
     @apply w-full h-auto
   }
   
-  section {
-    @apply mb-40
-  }
-
-  .form-input {
+  input,
+  textarea {
     @apply max-w-max text-base text-green-pale border-b border-b-transparent border-solid bg-transparent outline-none appearance-none w-full py-2 focus:border-green-pale
   }
   
-  textarea.form-input {
+  textarea {
     @apply h-auto  
   }
   
-  [type="submit"] {
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-xs md:text-sm
+  }
+  
+  input[type="submit"] {
     @apply text-sm text-green-pale font-medium uppercase hover:text-white disabled:hover:text-green-pale hover:bg-green-pale hover:opacity-70 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed opacity-100 disabled:opacity-40 transition-opacity duration-500 max-w-max px-4 py-2 border border-solid border-green-pale
   }
   
@@ -85,7 +91,7 @@
   }
     
   .search-widget {
-    @apply form-input text-green-pale focus:border-green-pale mr-2 transition-all duration-200 w-32 md:w-48
+    @apply text-green-pale focus:border-green-pale mr-2 transition-all duration-200 w-32 md:w-48
   }
 
   /**
@@ -99,6 +105,14 @@
   }
   
   /**
+   * "Item link" should apply for each item in item_list
+   *  @see templates/dataset/item-list.html.twig for usage examples.
+   */
+  .item-link {
+    @apply text-sm text-green-pale hover:bg-red-pale hover:text-white hover:animate-none rounded p-2
+  }
+  
+  /**
    * Custom animation, "grow" with usage of pre-existing twcss classes. 
    *  @see templates/navigation/menu--secondary-menu.html.twig for usage example.
    */
@@ -106,11 +120,11 @@
     @apply transition-all duration-200 ease-linear w-56 scale-0 invisible -translate-y-2/4 translate-x-2/4
   }
 
-   a.animation-grow {
-     @apply visible translate-y-0 translate-x-0
-   }
+  a.animation-grow {
+    @apply visible translate-y-0 translate-x-0
+  }
    
-   a.animation-grow::after {
+  a.animation-grow::after {
     @apply absolute left-0 top-[120%] w-full scale-x-0 h-[2px] bg-red-pale transition-all duration-300 ease-linear content-['']  -translate-y-2/4 -translate-x-2/4 
   }
 
@@ -130,12 +144,8 @@
   .pane.no-shadow {
     @apply shadow-none
   }
-  .pane.absolute {
-    @apply max-w-[23rem] md:md:max-w-screen-sm left-auto right-0 text-base font-light
-  }
-  
-  .item-link {
-    @apply text-sm text-green-pale hover:bg-red-pale hover:text-white hover:animate-none rounded p-2
+  .pane.positioned {
+    @apply min-w-full left-0 right-auto md:min-w-fit md:max-w-screen-sm md:left-auto md:right-0 text-base font-light
   }
   
   /**
@@ -149,33 +159,16 @@
   .fab-wrapper {
     @apply w-7 cursor-pointer shadow-sm h-7 rounded-full border-solid border-white border-4 text-center max-w-none md:transition-transform md:delay-150 md:hover:scale-110 md:duration-300 md:w-9 md:h-9 md:shadow-md md:hover:shadow-lg
   }
-  
   .fab-wrapper.is-active {
      @apply scale-[120%] shadow-lg
   }
-  
   .fab-icon {
     @apply text-green-pale opacity-60 text-base leading-[0] md:text-xl
   }
-  
   .fab-wrapper.is-active > .fab-icon {
     @apply text-red-pale
   }
-  
-  /**
-   * Drupal's admin tabs
-   */
-/*
-  .tailwind-tab a {
-    @apply inline-block px-4 py-2 rounded-t-lg border-solid border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300
-  }
-*/
-/*
-  .tailwind-tab a.is-active {
-    @apply border-blue-600 text-blue-500 border-blue-500
-  }
-  
-*/
+ 
   /**
    * Highlight.js code highlighting
    */
@@ -185,18 +178,7 @@
   .code-wrapper > .hljs-comment {
     @apply text-green-vivid
   }
-  
-  /**
-   * Video play icon.
-   */
-  .play-arrow {
-    @apply bg-gray-500 opacity-80
-  }
-  i.play-arrow {
-    left: calc(50% - 1.5rem);  
-  }
 
- 
 }
 
 /**
@@ -208,7 +190,6 @@
 .is-active {
   @apply text-red-pale
 }
-
 .floating {
   transform: translateY(-80%);
   pointer-events: none;
@@ -216,22 +197,22 @@
   position: absolute;
 }
 
+/* In case we end up having CKEditor5 in front-face.
 .ck.ck-icon,
 .ck.ck-icon *,
 .ck.ck-button .ck-button__label,
 a.ck.ck-button .ck-button__label {
   @apply text-green-pale !important
 }
-
 .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused),
 .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
 .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
   @apply border-none bg-transparent
 }
-
 .ck.ck-editor__editable.ck-focused {
   outline: none !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
+*/
