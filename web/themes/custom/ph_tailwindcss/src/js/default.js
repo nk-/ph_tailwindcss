@@ -171,9 +171,14 @@
                 
                 // A little extra deal for videos within observable sections.
                 // Lazu load its poster image (can be a big one!).
-                const video = section.target.querySelector('video');
-                if (video && video.dataset && video.dataset.poster) {
-                  video.setAttribute('poster', video.dataset.poster);
+                const videos = section.target.querySelectorAll('video');
+                if (videos.length) {
+                  videos.forEach(video => {
+                    if (video.dataset && video.dataset.poster) {
+                      video.setAttribute('poster', video.dataset.poster);
+                    }
+                  });
+
                 }
                 // Time to say good bye here!
                 sectionObserver.unobserve(section.target);
