@@ -36,11 +36,16 @@
   <div{{ create_attribute({'class': wrapper_classes}) }}>
     {% if site_logo %}
       <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home" class="max-h-8 md:max-h-12">
+        
+        {% include directory ~ '/logo.svg' %}
+        
+        {#
         {% if svg %} 
           {{ svg|raw }}
         {% else %}
           <img class="max-h-12" src="{{ site_logo }}" alt="{{ 'Home'|t }}" />
         {% endif %}
+        #}
        </a>
     {% endif %}
   
