@@ -59,11 +59,13 @@ class PhCoreCodeFormatter extends FormatterBase {
       $elements[$delta] = [
         //'#markup' => '<div class="ph_core-wrapper" rel="' . $language . '"><pre><code class="language-' . $language . '">' . $this->viewValue($item) . '</code></pre></div>',
         '#markup' => $this->viewValue($item),
+/*
         '#attached' => [
           'library' => [
             'ph_core/code',
           ],
         ],
+*/
       ];
     }
 

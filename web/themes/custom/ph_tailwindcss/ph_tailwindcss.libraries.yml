@@ -10,4 +10,7 @@ global-styling:
     component:
       dist/tailwind.css: { preprocess: false, minified: true } 
   js:
+    'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js': { type: external, minified: true }
     src/js/default.js: {}
+  dependencies:
+    - core/drupal

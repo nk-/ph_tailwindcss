@@ -18,4 +18,4 @@ as contributed Drupal theme. However, it may serve as a starter kit or ideas and
 `drush config-set system.theme default ph_tailwindcss`
 
 Start playing, either with Twig templates or with Tailwind's Post CSS file found in src folder within theme.
-To build distribution CSS file run: `npm run build` from within theme folder.
+To build distribution CSS file run: `npm run build` from within theme's folder.

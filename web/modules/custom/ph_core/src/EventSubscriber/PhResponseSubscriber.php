@@ -2,16 +2,36 @@
 
 namespace Drupal\ph_core\EventSubscriber;
 
-use Drupal\Core\Ajax\AjaxResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+use Drupal\Core\Ajax\AjaxResponse;
+
 
 /**
  * Response subscriber to handle AJAX responses.
  */
-class AjaxResponseSubscriber implements EventSubscriberInterface {
+class PhResponseSubscriber implements EventSubscriberInterface {
 
+  /**
+   * Current request.
+   *
+   * @var \Symfony\Component\HttpFoundation\Request|null
+   */
+  protected $request;
+  
+  /**
+   * AjaxResponseSubscriber constructor.
+   *
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   Request stack service.
+   */
+  public function __construct(RequestStack $request_stack) {
+    $this->request = $request_stack->getCurrentRequest();
+  }
+  
   /**
    * Renders the ajax commands right before preparing the result.
    *
@@ -43,9 +63,6 @@ class AjaxResponseSubscriber implements EventSubscriberInterface {
         'form_id' => $form_id,
         'form_build_id' => $form_build_id,
       ];
-      
-      //\Drupal::service('logger.factory')->get('ph_core')->notice('<pre>' . print_r($response, 1) .'</pre>');
-      
     }
   }
 

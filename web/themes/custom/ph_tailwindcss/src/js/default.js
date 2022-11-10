@@ -3,14 +3,16 @@
  * Ph TailwindCss theme scripts.
  */
    
-(function (Drupal) { 
+(function (Drupal, cookies) { 
 
   'use strict';
   
   document.onreadystatechange = () => {
 
     let timeout;
+    
     if (document.readyState == 'interactive') {
+      // Always a good idea to cleanup any timeout.
       if (typeof timeout === 'number') {
         clearTimeout(timeout);
       }
@@ -28,7 +30,17 @@
           s.remove();
         }, 1500, spinner);
       }
-      
+
+      // "Animate grow" type of animations.
+      const animations = [].slice.call(document.querySelectorAll('.animation-grow'));
+      if (animations.length) {
+        animations.forEach(animation => { 
+          animation.classList.add('loaded');
+        });
+        //localStorage.setItem('animated', 'done');
+        
+      }
+
       // Heart animation.
       const mainHeart = document.getElementById('main-heart');
       if (mainHeart) {
@@ -47,8 +59,7 @@
 
   Drupal.behaviors.phDefault = {
     attach: function(context, settings) {
-     
-      
+
       if (settings.path.isFront) {
         const logo = document.getElementById('site-logo');
         if (logo) {
@@ -71,12 +82,12 @@
         
         
         if (typeof hljs != 'undefined') {
-          document.querySelectorAll('code').forEach(element => { 
-            //element.innerText = factory.escape(element.innerText);
+          context.querySelectorAll('code').forEach(element => {
             hljs.highlightElement(element);
           });
+          // Alternative - does not work.
+          //hljs.highlightAll();
         }
-        
         return false;
       }
     }
@@ -251,4 +262,4 @@
     }
   };
  
-})(Drupal);
+})(Drupal, window.Cookies)
