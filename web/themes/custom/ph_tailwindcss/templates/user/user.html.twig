@@ -37,11 +37,12 @@
       'py-0',
     ]
   %}
+  {% set url = path('entity.user.canonical', {'user': user.id}) %}
   <article{{ attributes.addClass(wrapper_classes) }}>
-    <div{{ create_attribute({'class': flex_classes}) }}>
+    <a{{ create_attribute({'class': flex_classes}).setAttribute('href', url) }}>
       {{ content.user_picture}}
       {{ content.field_name}}
-    </div>
+    </a>
     <div{{ create_attribute({'class': inner_classes}) }}>
       {{ content|without('user_picture', 'field_name') }}
     </div>
