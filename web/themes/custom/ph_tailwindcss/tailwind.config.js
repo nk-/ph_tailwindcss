@@ -79,5 +79,6 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/typography'),
+    require('tailwind-highlightjs'),
   ],
 };

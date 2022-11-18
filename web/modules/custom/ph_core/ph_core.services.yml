@@ -7,7 +7,7 @@ services:
     arguments: ['@request_stack']
     tags:
       - { name: event_subscriber }
-  ph_core.route_subscriber:
-    class: Drupal\ph_core\Routing\PhCoreRouteSubscriber
-    tags:
-      - { name: event_subscriber }
+  # ph_core.route_subscriber:
+  #  class: Drupal\ph_core\Routing\PhCoreRouteSubscriber
+  #  tags:
+  #    - { name: event_subscriber }

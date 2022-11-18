@@ -58,7 +58,13 @@ function ph_tailwindcss_theme_suggestions_input_alter(array &$suggestions, array
     $suggestions[] = 'input__' . $variables['element']['#type'];
   }
   if (isset($variables['element']['#name'])) {
-    $name = strpos($variables['element']['#name'], '[') !== FALSE ? str_replace(['[', ']'], ['_', ''], $variables['element']['#name']) : $variables['element']['#name'];
+    if (strpos($variables['element']['#name'], '[') !== FALSE) {
+      $name = str_replace(['[', ']'], ['_', ''], $variables['element']['#name']);
+    }
+    else {
+      $name = $variables['element']['#name'];
+    }
+
     if ($has_digit = strcspn($name, '0123456789')) {
       $name_replace = substr($name, $has_digit, 2);
       $name = str_replace($name_replace, '', $name);
@@ -155,7 +161,8 @@ function ph_tailwindcss_preprocess_input(&$variables) {
         case 'search':
           $variables['icon'] = $variables['element']['#type'];
           if (isset($variables['element']['#id'])) {
-            $variables['widget_id'] = Html::getUniqueId('ph_' . str_replace(['edit-', '-'], ['', '_'], $variables['element']['#id']));
+            $widget_id = str_replace(['edit-', '-'], ['', '_'], $variables['element']['#id']);
+            $variables['widget_id'] = Html::getUniqueId('ph_' . $widget_id);
           }
           break;
 
@@ -178,20 +185,13 @@ function ph_tailwindcss_preprocess_field(&$variables) {
   $code_fields = [
     'field_code_title' => 'data-collapsible',
     'field_code' => 'data-collapsible-target',
-    'field_code_body'=> 'data-collapsible-target',
+    'field_code_body' => 'data-collapsible-target',
   ];
   if (in_array($variables['field_name'], array_keys($code_fields))) {
     if (isset($variables['element']['#object'])) {
       $variables['collapsible_id'] = 'collapsible-paragraph-' . $variables['element']['#object']->id();
     }
   }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function ph_tailwindcss_preprocess_menu_local_task(&$variables) {
-  //dpm($variables); 
 }
 
 /**
@@ -276,22 +276,21 @@ function ph_tailwindcss_preprocess_file_video(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function ph_tailwindcss_preprocess_media__video(&$variables) {
-  if (isset($variables['elements']['field_media_image'])) {
+function ph_tailwindcss_preprocess_file_link(&$variables) {
 
-    $settings = \Drupal::service('entity_type.manager')->getStorage('entity_view_display')
-      ->load('media.image.' . $variables['view_mode'])
-      ->getRenderer('field_media_image')
-      ->getSettings();
+  $file_usage = \Drupal::service('file.usage')->listUsage($variables['file']);
+  if (is_array($file_usage) && isset($file_usage['file']) && isset($file_usage['file']['media'])) {
 
-    foreach ($variables['elements']['field_media_image'] as $key => $field_media_image) {
-      if (is_numeric($key) && isset($field_media_image['#item']) && isset($field_media_image['#item']->entity) && isset($variables['elements']['field_media_video_file']) && isset($variables['elements']['field_media_video_file'][$key])) {
-        $image_style = $key == 0 && !isset($variables['elements']['field_media_image'][1]) ? 'poster_large' : $settings['image_style'];
-        $style = \Drupal::service('entity_type.manager')->getStorage('image_style')->load($image_style);
+    $media_id_array = array_keys($file_usage['file']['media']);
+    $media_id = reset($media_id_array);
 
-        if ($original_image = $field_media_image['#item']->entity->getFileUri()) {
-          $variables['elements']['field_media_video_file'][$key]['#attributes']['data-poster'] = $style ? $style->buildUrl($original_image) : $original_image;
-        }
+    if ($media = \Drupal::service('entity_type.manager')->getStorage('media')->load($media_id)) {
+      $variables['link']['#title'] = $media->getName();
+      $mime_type = $variables['file']->getMimeType();
+      switch ($mime_type) {
+        case 'application/pdf':
+          $variables['icon'] = 'picture_as_pdf';
+          break;
       }
     }
   }
@@ -300,14 +299,22 @@ function ph_tailwindcss_preprocess_media__video(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-/*
-function ph_tailwindcss_preprocess_block(&$variables) {
-  if ($variables['base_plugin_id'] == 'system_branding_block' && $variables['content']['site_logo']['#access'] && $variables['content']['site_logo']['#uri'] && strpos($variables['content']['site_logo']['#uri'], '.svg') !== FALSE) {
-    if ($svg = \Drupal::service('ph_core')->fetchData($variables['content']['site_logo']['#uri'])) {
-      if (strpos($svg, '<svg') !== FALSE) {
-        $variables['svg'] = $svg;
+function ph_tailwindcss_preprocess_media__video(&$variables) {
+  if (isset($variables['elements']['field_media_image'])) {
+    if ($media_view_mode = \Drupal::service('entity_type.manager')->getStorage('entity_view_display')->load('media.image.' . $variables['view_mode'])) {
+      $settings = $media_view_mode->getRenderer('field_media_image')->getSettings();
+      if (is_array($settings) && !empty($settings)) {
+        foreach ($variables['elements']['field_media_image'] as $key => $field_media_image) {
+          if (is_numeric($key) && isset($field_media_image['#item']) && isset($field_media_image['#item']->entity) && isset($variables['elements']['field_media_video_file']) && isset($variables['elements']['field_media_video_file'][$key])) {
+            $image_style = $key == 0 && !isset($variables['elements']['field_media_image'][1]) ? 'poster_large' : $settings['image_style'];
+            $style = \Drupal::service('entity_type.manager')->getStorage('image_style')->load($image_style);
+
+            if ($original_image = $field_media_image['#item']->entity->getFileUri()) {
+              $variables['elements']['field_media_video_file'][$key]['#attributes']['data-poster'] = $style ? $style->buildUrl($original_image) : $original_image;
+            }
+          }
+        }
       }
     }
   }
 }
-*/

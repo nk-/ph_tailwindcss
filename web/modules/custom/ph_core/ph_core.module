@@ -29,6 +29,19 @@ function ph_core_theme() {
 }
 
 /**
+ * Implements hook_mail_alter().
+ */
+function ph_core_mail_alter(&$message) {
+  switch ($message['id']) {
+    // Contact form email, be more compatible with anti-spam.
+    case 'contact_page_mail':
+      $message['body'][] = t("Sender's email: @email", ['@email' => $message['headers']['Reply-to']]);
+      $message['headers']['Reply-to'] = $message['headers']['Sender'];
+      break;
+  }
+}
+
+/**
  * Implements hook_entity_base_field_info().
  *
  * Extra base fields on menu_link_content entity.

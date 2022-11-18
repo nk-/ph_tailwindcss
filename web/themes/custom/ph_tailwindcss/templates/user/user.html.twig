@@ -22,12 +22,11 @@
       'py-8',
     ]
   %}
-  {% 
+  {%
     set flex_classes = [
-      'block',
-      'md:flex',
-      'md:space-x-4',
-      'md:items-center',
+      'flex',
+      'space-x-4',
+      'items-center',
       'my-4'
     ]
   %}
@@ -37,6 +36,13 @@
       'py-0',
     ]
   %}
+  {%
+    set placeholder_classes = [
+      'max-w-xs',
+      'basis-2/12',
+      'basis-10/12',
+    ]
+  %}
   {% set url = path('entity.user.canonical', {'user': user.id}) %}
   <article{{ attributes.addClass(wrapper_classes) }}>
     <a{{ create_attribute({'class': flex_classes}).setAttribute('href', url) }}>
@@ -44,7 +50,11 @@
       {{ content.field_name}}
     </a>
     <div{{ create_attribute({'class': inner_classes}) }}>
-      {{ content|without('user_picture', 'field_name') }}
+      {{ content.field_role }}
+      <div class="mb-16">
+        {{ content.field_file}}
+      </div>
+      {{ content|without('user_picture', 'field_name', 'field_file', 'field_role') }}
     </div>
   </article>
 {% endif %}

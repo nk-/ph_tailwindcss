@@ -71,47 +71,59 @@
  */
 #}
 
-{% 
+{% set hasVideo = node.hasField('field_videos') and node.field_videos.target_id %}
+{% set hasImage = node.hasField('field_images') and node.field_images.target_id %}
+
+{%
+  set wrapper_classes = [
+    'py-2',
+  ]
+%}
+{#
+{%
+  set wrapper_classes = [
+    hasVideo or hasImage ? 'flex',
+    hasVideo or hasImage ? 'items-center',
+    'py-2',
+  ]
+%}
+#}
+
+{%
   set title_classes = [
-    'text-3xl',
-    'md:text-5xl',
+    'text-lg',
+    'md:text-xl',
     'font-thin',
   ]
 %}
-<article{{ attributes.addClass('node').setAttribute('data-observe', '') }}>
-  
-  {{ content.field_images }}
-  
-  {{ title_prefix }}
-  {% if not page %}
-    <h2{{ title_attributes.addClass(title_classes) }}>
-      {# <a href="{{ url }}" rel="bookmark">{{ label }}</a> #}
-      {{ label }}
-    </h2>
-  {% endif %}
-  {{ title_suffix }}
-  
-  <div{{ content_attributes.addClass('w-full mx-0 mb-8') }}>
-    
-    {{ content.body }}
-    {{ content.field_story }}
-    
-    <div class="mb-20">
-      {{ content.field_code_block }}
+
+<article{{ attributes.addClass(wrapper_classes) }}>
+
+  {#
+  {% if hasImage %}
+    <div class="w-20">
+    {{ content.field_images }}
     </div>
-    
-    {{ content|without('field_knowledge_level', 'field_images', 'body', 'field_story', 'field_code_block') }}
-    
-  </div>
+  {% endif %}
+  #}
 
-  {% if display_submitted %}
-    <footer>
-      {{ author_picture }}
-      <div{{ author_attributes }}>
-        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-        {{ metadata }}
-      </div>
-    </footer>
+  {% if hasVideo or hasImage %}
+    <div>
+  {% endif %}
+    {{ title_prefix }}
+    <h3{{ title_attributes.addClass(title_classes) }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h3>
+    {{ title_suffix }}
+  {% if hasVideo or hasImage %}
+    </div>
   {% endif %}
 
+  {#
+  {% if hasVideo %}
+    {{ content.field_videos }}
+  {% elseif hasImage %}
+    {{ content.field_images }}
+  {% endif %}
+#}
 </article>

@@ -52,7 +52,7 @@
   }
   
   input[type="submit"] {
-    @apply text-sm text-green-pale font-medium uppercase hover:text-white disabled:hover:text-green-pale hover:bg-green-pale hover:opacity-70 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed opacity-100 disabled:opacity-40 transition-opacity duration-500 max-w-max px-4 py-2 border border-solid border-green-pale
+    @apply text-sm text-green-pale font-medium uppercase hover:text-white disabled:hover:text-green-pale hover:bg-green-pale hover:opacity-70 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed opacity-100 disabled:opacity-40 transition-opacity duration-500 w-max px-4 py-2 border border-solid border-green-pale
   }
   
   [data-drupal-selector="password-confirm-message"] {
@@ -70,7 +70,10 @@
   [data-drupal-selector="edit-field-link-wrapper"] {
     @apply basis-[35%] md:ml-8
   }
-
+  
+  :focus-visible {
+    outline: none;
+  }
 }
 
 @layer components {

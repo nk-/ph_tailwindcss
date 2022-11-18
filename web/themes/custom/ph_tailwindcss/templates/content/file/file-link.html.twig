@@ -12,4 +12,12 @@
  * @see stable_preprocess_image_widget()
  */
 #}
-<span{{ attributes.addClass('hidden') }}>{{ link }}</span>
+{% if icon %}
+  <span{{ attributes.addClass(['flex', 'items-center', 'space-x-2', 'mt-4', 'mb-4']) }}>
+    <i class="material-icons-outlined">{{ icon }}</i>
+    {{ link }}
+  </span>
+{% else %}
+  <span{{ attributes.addClass('hidden') }}>{{ link }}</span>
+{% endif %}
+

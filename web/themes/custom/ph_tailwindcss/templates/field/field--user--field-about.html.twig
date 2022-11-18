@@ -1,0 +1,137 @@
+{#
+/**
+ * @file
+ * Theme override for a field.
+ *
+ * To override output, copy the "field.html.twig" from the templates directory
+ * to your theme's directory and customize it, just like customizing other
+ * Drupal templates such as page.html.twig or node.html.twig.
+ *
+ * Instead of overriding the theming for all fields, you can also just override
+ * theming for a subset of fields using
+ * @link themeable Theme hook suggestions. @endlink For example,
+ * here are some theme hook suggestions that can be used for a field_foo field
+ * on an article node type:
+ * - field--node--field-foo--article.html.twig
+ * - field--node--field-foo.html.twig
+ * - field--node--article.html.twig
+ * - field--field-foo.html.twig
+ * - field--text-with-summary.html.twig
+ * - field.html.twig
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the containing element.
+ * - label_hidden: Whether to show the field label or not.
+ * - title_attributes: HTML attributes for the title.
+ * - label: The label for the field.
+ * - multiple: TRUE if a field can contain multiple items.
+ * - items: List of all the field items. Each item contains:
+ *   - attributes: List of HTML attributes for each item.
+ *   - content: The field item's content.
+ * - entity_type: The entity type to which the field belongs.
+ * - field_name: The name of the field.
+ * - field_type: The type of the field.
+ * - label_display: The display settings for the label.
+ *
+ * @see template_preprocess_field()
+ */
+#}
+
+{%
+  set title_classes = [
+    label_display == 'visually_hidden' ? 'visually-hidden',
+  ]
+%}
+{% set items = params.data and params.data.items ? params.data.items : items %}
+{% set label = params.data and params.data.label ? params.data.label : label %}
+{% set title_tag = params.data and params.data.tag ? params.data.tag : 'div' %}
+
+{% 
+  set flex_classes = [
+    'block',
+    'md:flex',
+    'md:space-x-4',
+    'md:items-center',
+    'my-4'
+  ]
+%}
+
+{% if label_hidden %}
+  
+  {% if multiple %}
+    {% if attributes is not empty or params.wrapper %}
+      {% if params.wrapper %}
+        <div{{ attributes.addClass(params.wrapper) }}>
+      {% elseif attributes is not empty %}
+        <div{{ attributes }}>
+      {% endif %}
+    {% endif %}
+    
+    {% for item in items %}
+      {% if item.attributes is not empty or params.items %}
+        {% if params.items %}
+          <{{ title_tag }}{{ item.attributes.addClass(params.items) }}>{{ item.content }}</{{ title_tag }}>
+        {% else %}
+          <{{ title_tag }}{{ item.attributes }}>{{ item.content }}</{{ title_tag }}>
+        {% endif %}
+      {% else %}
+        {{ item.content }}
+      {% endif %}
+    {% endfor %}
+    {% if attributes is not empty or params.wrapper %}
+      </div>
+    {% endif %}
+
+  {% else %}
+    {% for item in items %}
+      {% if attributes is not empty or params.wrapper %}
+        {% if params.wrapper %}
+         <div{{ attributes.addClass(params.wrapper) }}>{{ item.content }}</div>
+        {% else %}
+          <div{{ attributes }}>{{ item.content }}</div>
+        {% endif %}
+      {% else %}
+        {{ item.content }}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% else %}
+  
+  {% if attributes is not empty or params.wrapper %}
+    {% if params.wrapper %}
+      <div{{ attributes.addClass(params.wrapper) }}>
+    {% elseif attributes is not empty %}
+      <div{{ attributes }}>
+    {% endif %}
+  {% endif %}
+  
+  <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+  
+  {#
+  {% if multiple %}
+    <div class="multiple">
+  {% endif %}
+  #}
+  
+  {% for item in items %}
+    {% if item.attributes is not empty or params.items %}
+      {% if params.items %}
+        <{{ title_tag }}{{ item.attributes.addClass(params.items) }}>{{ item.content }}</{{ title_tag }}>
+      {% else %}
+        <{{ title_tag }}{{ item.attributes }}>{{ item.content }}</{{ title_tag }}>
+      {% endif %}
+    {% else %}
+      {{ item.content }}
+    {% endif %}
+  {% endfor %}
+  
+  {#
+  {% if multiple %}
+    </div>
+  {% endif %}
+  #}
+  
+  {% if attributes is not empty or params.wrapper %}
+    </div>
+  {% endif %}
+{% endif %}

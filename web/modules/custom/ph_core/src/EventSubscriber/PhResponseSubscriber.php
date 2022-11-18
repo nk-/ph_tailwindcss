@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 use Drupal\Core\Ajax\AjaxResponse;
 
-
 /**
  * Response subscriber to handle AJAX responses.
  */
@@ -21,7 +20,7 @@ class PhResponseSubscriber implements EventSubscriberInterface {
    * @var \Symfony\Component\HttpFoundation\Request|null
    */
   protected $request;
-  
+
   /**
    * AjaxResponseSubscriber constructor.
    *
@@ -31,7 +30,7 @@ class PhResponseSubscriber implements EventSubscriberInterface {
   public function __construct(RequestStack $request_stack) {
     $this->request = $request_stack->getCurrentRequest();
   }
-  
+
   /**
    * Renders the ajax commands right before preparing the result.
    *
@@ -53,7 +52,7 @@ class PhResponseSubscriber implements EventSubscriberInterface {
             $form_build_id = $command['new'];
           }
           if (isset($command['method']) && $command['method'] == 'phAjaxFormValidatation' && !empty($command['args'])) {
-            $form_id = isset($command['args'][0]['form_id']) ? $command['args'][0]['form_id'] : NULL;
+            $form_id = $command['args'][0]['form_id'] ?? NULL;
           }
         }
       }
